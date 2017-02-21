@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="../../php/js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="app_1">
+			<p>{{message}}</p>
+		</div>
+		<div id="app_2">
+			<p>{{message}}</p>
+			<input type="text" v-model="message" />
+		</div>
+		<div id="app_3">
+			<span v-bind:title="msg">666</span>
+		</div>
+		<div id="app_4">
+			<ul>
+				<li v-for="todo in todos">
+					{{todo.text}}
+				</li>
+			</ul>
+		</div>
+		<div id="app_5">
+			<p>{{message}}</p>
+			<button v-on:click="rever">rever</button>
+		</div>
+		
+	</body>
+	<script type="text/javascript">
+		var app1 = new Vue({
+			el:"#app_1",
+			data:{
+				message:"hei"
+			}
+		});
+		var app2 = new Vue({
+			el:"#app_2",
+			data:{
+				message:"lei"
+			}
+		});
+		var app3 = new Vue({
+			el:"#app_3",
+			data:{
+				msg:new Date()
+			}
+		});
+		var app4 = new Vue({
+			el:"#app_4",
+			data:{
+				todos:[
+					{text:"haha"},
+					{text:1111},
+					{text:"heihei"}
+				]
+			}
+		});
+		var app5 = new Vue({
+			el:"#app_5",
+			data:{
+				message:"hello"
+			},
+			methods:{
+				rever:function(){
+					this.message=this.message.split("").reverse().join("");
+				}
+			}
+		});
+		
+	</script>
+</html>

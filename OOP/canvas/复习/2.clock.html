@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#myCanvas{
+				border: 2px solid #8B4513;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+		function Clock(x, y,r,color) {
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.color = color;
+		}
+		Clock.prototype.draw = function(){
+			context.beginPath();
+			context.arc(this.x,this.y,this.r,0,360*deg);
+			context.fillStyle = this.color;
+			context.fill();
+			
+			context.save();
+			context.translate(300,300);
+			for(var i=0;i<60;i++){
+				context.save();
+				context.rotate(6*i*deg);
+				if(i%5==0){
+					context.fillStyle = "brown";
+					context.fillRect(120,-4,30,8);
+				}else{
+					context.fillStyle = "black";
+					context.fillRect(130,-4,20,8);
+				}
+				
+				context.restore();
+			}
+			context.restore();
+			
+		}
+		
+		Clock.prototype.drawZhen = function(){
+			var nowDate = new Date();
+			var hour = nowDate.getHours();
+			var minute = nowDate.getMinutes();
+			var second = nowDate.getSeconds();
+			
+			sec = second;
+			minu = minute+second/60;
+			hour = hour+minu/60;
+			
+			context.save();
+			context.translate(300,300);
+			context.rotate(-90*deg);
+			
+			context.save();
+			context.rotate(hour*30*deg);
+			context.fillStyle = "#000000";
+			context.fillRect(0,-5,60,10);
+			context.restore();
+			
+			context.save();
+			context.rotate(minu*6*deg);
+			context.fillStyle = "#8B4513";
+			context.fillRect(0,-4,80,8);
+			context.restore();
+			
+			context.save();
+			context.rotate(sec*6*deg);
+			context.fillStyle = "darkslateblue";
+			context.fillRect(0,-4,120,6);
+			context.restore();
+			
+			
+			context.restore();
+			
+		}
+		
+		var clock = new Clock(300,300,160,"pink");
+		clock.draw();
+		clock.drawZhen();
+		
+		setInterval(function(){
+			context.clearRect(0,0,600,600);
+			clock.draw();
+			clock.drawZhen();
+		},1000)
+	</script>
+</html>

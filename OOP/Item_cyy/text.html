@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+
+	<head>
+		<title>放大镜</title>
+		<meta charset="utf-8" />
+		<link href="css/magnifier.css" rel="stylesheet" type="text/css" />
+		<!--<script type="text/javascript" src="js/magnifier.js"></script>-->
+		<script src="js/angular.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			#big-box img {
+				position: absolute;
+			}
+			
+			* {
+				margin: 0px;
+				padding: 0px;
+			}
+			
+			#small-box {
+				position: relative;
+				border: 1px solid #ccc;
+				display: block;
+				width: 400px;
+				height: 255px;
+				margin: 50px;
+			}
+			
+			#float-box {
+				display: none;
+				width: 160px;
+				height: 120px;
+				position: absolute;
+				background: #ffffcc;
+				border: 1px solid #ccc;
+				filter: alpha(opacity=50);
+				opacity: 0.5;
+			}
+			
+			#big-box {
+				display: none;
+				position: absolute;
+				top: 0px;
+				z-index: 1;
+				left: 460px;
+				width: 410px;
+				height: 307px;
+				overflow: hidden;
+				border: 1px solid #ccc;
+			}
+		</style>
+	</head>
+
+	<body>
+	 
+		<div id="small-box">
+			<div id="float-box"></div>
+			<img title="small img" src="images/macbook-small.jpg">
+		</div>
+		<div id="big-box">
+			<img title="bigger img" src="images/macbook-big.jpg">
+		</div>
+	</body>
+
+</html>
+
+<script type="text/javascript">
+	window.onload = function() {
+		// 获取所需要操作的对象
+		var smallBox = document.getElementById("small-box");
+		var floatBox = document.getElementById("float-box");
+		var bigBox = document.getElementById("big-box");
+		var bigImage = bigBox.getElementsByTagName("img")[0];
+
+		// 鼠标移动到对象上显示放大镜和放大镜放大后的图像
+		smallBox.onmouseover = function() {
+			floatBox.style.display = "block";
+			bigBox.style.display = "block";
+		}
+
+		// 鼠标移出对象时隐藏放大镜和放大镜放大后的图像
+		smallBox.onmouseout = function() {
+			floatBox.style.display = "none";
+			bigBox.style.display = "none";
+		}
+
+		// 鼠标在对象上移动触发的事件
+		smallBox.onmousemove = function(e) {
+			var event = e || window.event;
+			var left = event.clientX - smallBox.offsetLeft - floatBox.offsetWidth / 2;
+			var top = event.clientY - smallBox.offsetTop - floatBox.offsetHeight / 2;
+
+			if(left < 0) {
+				left = 0;
+			} else if(left > (smallBox.offsetWidth - floatBox.offsetWidth)) {
+				left = smallBox.offsetWidth - floatBox.offsetWidth;
+			}
+
+			if(top < 0) {
+				top = 0;
+			} else if(top > (smallBox.offsetHeight - floatBox.offsetHeight)) {
+				top = smallBox.offsetHeight - floatBox.offsetHeight;
+			}
+
+			// 设置放大镜移动的距离
+			floatBox.style.left = left + "px";
+			floatBox.style.top = top + "px";
+			// 根据比例计算放大镜放大后的图像移动的位移(负数)
+			bigImage.style.left = -(left * bigImage.offsetWidth) / smallBox.offsetWidth + "px";
+			bigImage.style.top = -(top * bigImage.offsetHeight) / smallBox.offsetHeight + "px";
+		}
+	}
+</script>

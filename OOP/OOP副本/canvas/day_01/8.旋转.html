@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 0 3px saddlebrown;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+//		context.fillRect(0,0,150,150);
+//		context.rotate(45*deg);
+//		context.fillStyle = "royalblue";
+//		context.fillRect(300,0,150,150);
+
+		context.fillRect(0,0,300,300);
+		context.translate(300,300);
+		context.fillStyle = "red";
+		context.rotate(20*deg);
+		context.fillRect(0,-10,100,20);
+	</script>
+</html>

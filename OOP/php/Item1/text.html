@@ -1,0 +1,588 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="Content-Language" content="zh-CN">
+		<meta name="Keywords" content="SuperSlide,jQuery-竖向导航（商城导航）">
+		<meta name="Description" content="SuperSlide,jQuery-竖向导航（商城导航）">
+		<title>SuperSlide - 竖向导航（商城导航）</title>
+		<script type="text/javascript" src="js/jquery1.42.min.js"></script>
+		<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+		<link rel="stylesheet" href="css/improts.css" />
+	</head>
+
+	<body>
+
+		<style type="text/css">
+			.banner {
+				position: relative;
+				width: 1200px;
+				height: 3000px;
+				margin: 0 auto;
+				/*background: #FF0000;*/
+				overflow: hidden;
+			}
+			
+			.oneFloorDetail {
+				 
+				border: 1px solid lightgray; 
+			}
+			.oneFloorDetail:after{
+				content: "";
+				display: block;
+				clear: both;
+			}
+			.oneFloorDetail {
+				width: 948px;
+				height: 498px;
+			 
+				float: left;
+			}
+			
+			/*.detailBox {
+				width: 950px;
+				height: 200px;
+			 
+			}*/
+			
+			.iphonesBox {
+				width: 200px;
+				height: 200px;
+				background-color: aliceblue;
+				float: left;
+			}
+			
+			.iphones {
+				width: 98px;
+				height: 48px;
+				border: 1px solid #C0AC98;
+				background-image: url(images/inphones.png);
+				display: block;
+				float: left;
+			}
+			
+			.oneFloorSilder {
+				width: 250px;
+				height: 500px;
+				float: right;
+				/*background: darkturquoise;*/
+			}
+			
+			.tabRank {
+				width: 250px;
+				border: 1px solid #d8d8d8;
+			}
+			
+			.tabRank .hd {
+				background-color: #e2e2e2;
+				height: 29px;
+				line-height: 28px;
+				border-bottom: none;
+			}
+			
+			.tabRank .hd h3 {
+				float: left;
+				width: 124px;
+				/*overflow: hidden;*/
+				text-align: center;
+			}
+			
+			.tabRank .hd h3 a {
+				color: #333;
+				font-size: 14px;
+				font-weight: bold;
+			}
+			
+			.tabRank .hd h3.on {
+				background-color: #f9f9f9;
+				height: 29px;
+			}
+			
+			.tabRank .hd h3.on a {
+				display: block;
+				color: #e72410;
+			}
+			
+			.tabRank .bd {
+				height: 448px;
+				background-color: #f9f9f9;
+				clear: both;
+			}
+			
+			.tabRank .bd ul {
+				padding: 10px 8px;
+			}
+			
+			.tabRank .bd .ulList li {
+				border-bottom: 1px solid #e5e5e5;
+				height: 40px;
+				line-height: 42px;
+				width: 232px !important;
+			}
+			
+			.tabRank .bd .ulList li a {
+				color: #333;
+			}
+			
+			.tabRank .bd .ulList li .num {
+				font-size: 14px;
+				font-weight: bold;
+				color: #333;
+				background: url(images/icons.png) no-repeat -50px 0;
+				width: 24px;
+				height: 20px;
+				display: block;
+				float: left;
+				line-height: 17px;
+				text-align: center;
+				margin-top: 13px;
+				padding-right: 6px;
+			}
+			
+			.tabRank .bd .ulList li.t .num {
+				background-position: 0 0;
+				color: #fff;
+			}
+			
+			.tabRank .bd .ulList li.t {
+				line-height: 42px !important;
+			}
+			
+			.tabRank .bd .ulList li.on img {
+				width: 150px;
+				height: 94px;
+				padding: 4px;
+				border: 1px solid #d0d0d0;
+				background-color: #fff;
+			}
+			
+			.tabRank .bd .ulList li .pubtext {
+				color: #777;
+				display: none;
+			}
+			
+			.tabRank .bd .ulList li .pubtext strong {
+				color: #E72410;
+			}
+			
+			.tabRank .bd .ulList li .pubtext a {
+				color: #E72410;
+			}
+			
+			.tabRank .bd .ulList li .pubpic {
+				display: none;
+			}
+			
+			.tabRank .bd .ulList li.on {
+				height: 150px;
+				text-align: center;
+				line-height: 22px !important;
+			}
+			
+			.tabRank .bd .ulList li.on .pubpic {
+				display: block;
+				padding-top: 5px;
+			}
+			
+			.tabRank .bd .ulList li.on .pubtext {
+				color: #777;
+				display: block;
+			}
+			
+			.tabRank .bd .ulList2 .pic {
+				float: left;
+			}
+			
+			.tabRank .bd .ulList2 .con {
+				float: right;
+				width: 160px;
+			}
+			
+			.tabRank .bd .ulList2 li {
+				clear: both;
+				padding-top: 8px;
+				height: 58px;
+				border-bottom: 1px solid #E5E5E5;
+			}
+			
+			.tabRank .bd .ulList2 img {
+				width: 57px;
+				height: 47px;
+				padding: 1px;
+				border: 1px solid #d0d0d0;
+				background-color: #fff;
+				float: left;
+			}
+			
+			.iphonesPic {
+				width: 748px;
+				height: 200px;
+				/*background-color: aquamarine;*/
+				float: right;
+			}
+			
+			 
+			
+			.detB {
+				float: left;
+				width: 177px;
+				height: 285px;
+				padding: 5px;
+				border: 1px solid white;
+			}
+			
+			.detBimg {
+				width: 160px;
+				height: 160px;
+				margin-left: 8px;
+			}
+			
+			.detBut {
+				background-color: #F4F4F4;
+			}
+			
+			.detBDiv {
+				margin: 5px;
+			}
+			
+			.detBDiv div:nth-child(1) {
+				font-size: 15px;
+				float: left;
+				color: red;
+			}
+			
+			.detBDiv div:nth-child(2) {
+				font-size: 15px;
+				float: right;
+				color: darkgray;
+				text-decoration: line-through;
+			}
+			/*清浮动*/
+			
+			.detBDiv:after {
+				display: block;
+				clear: both;
+				content: "";
+			}
+			
+			.detBNum {
+				height: 40px;
+				line-height: 40px;
+				text-align: center;
+				font-size: 15px;
+				color: darkgray;
+				border-top: 1px solid lightgray;
+			}
+			.oneFloorTitle{
+				height: 50px; background-color: black; color: white; font-size: 16px;line-height: 50px;text-align: center;
+			}
+		</style>
+
+		<div class="banner">
+			<div class="oneFloorBox">
+					<div class="oneFloorDetail">
+				<div class="detailBox">
+					<div class="iphonesBox"  >
+						<div class="iphones"  >
+							<a href="#" class="iphones">
+								<img src="images/1f-01.png" />
+							</a>
+						</div>
+						<div class="iphones">
+							<a href="#" class="iphones">
+								<img src="images/1f-02.png" />
+							</a>
+						</div>
+						<div class="iphones"  >
+							<a href="#" class="iphones">
+								<img src="images/1f-03.png" />
+							</a>
+						</div>
+						<div class="iphones"  >
+							<a href="#" class="iphones">
+								<img src="images/1f-04.png" />
+							</a>
+						</div>
+						<div class="iphones"  >
+							<a href="#" class="iphones">
+								<img src="images/1f-05.png" />
+							</a>
+						</div>
+						<div class="iphones"  >
+							<a href="#" class="iphones">
+								<img src="images/1f-06.png" />
+							</a>
+						</div>
+						<div class="iphones"  >
+							<a href="#" class="iphones">
+								<img src="images/1f-07.png" />
+							</a>
+						</div>
+						<div class="iphones"  >
+							<a href="#" class="iphones">
+								<img src="images/1f-08.png" />
+							</a>
+						</div>
+
+					</div>
+					<div class="iphonesPic"  >
+						<a href="#">
+							<img src="images/mod_ad13.jpg" />
+						</a>
+					</div>
+				</div>
+				<div class="detailBottom">
+					<div class="detB">
+						<a href="#">
+							<img class="detBimg" src="images/2013109112914.jpg" />
+						</a>
+						
+						<div class="detBut">
+							<div class="detBDiv">
+								<a href="">iPhone5土豪金贴膜 苹果5S全边框贴纸 金</a>
+							</div>
+							<div class="detBDiv">
+
+								<div>
+									￥9
+								</div>
+								<div>
+									原价:39
+								</div>
+							</div>
+							<div class="detBNum">
+								已售：3421
+							</div>
+						</div>
+					</div>
+
+					<div class="detB">
+						<a href="#">
+							<img class="detBimg" src="images/2013109112914.jpg" />
+						</a>	
+						
+						<div class="detBut">
+							<div class="detBDiv">
+								<a href="">iPhone5土豪金贴膜 苹果5S全边框贴纸 金</a>
+							</div>
+							<div class="detBDiv">
+
+								<div>
+									￥9
+								</div>
+								<div>
+									原价:39
+								</div>
+							</div>
+							<div class="detBNum">
+								已售：3421
+							</div>
+						</div>
+					</div>
+
+					<div class="detB">
+
+						<a href="#">
+							<img class="detBimg" src="images/2013109112914.jpg" />
+						</a>
+						<div class="detBut">
+							<div class="detBDiv">
+								<a href="">iPhone5土豪金贴膜 苹果5S全边框贴纸 金</a>
+							</div>
+							<div class="detBDiv">
+
+								<div>
+									￥9
+								</div>
+								<div>
+									原价:39
+								</div>
+							</div>
+							<div class="detBNum">
+								已售：3421
+							</div>
+						</div>
+					</div>
+
+					<div class="detB">
+
+						<a href="#">
+							<img class="detBimg" src="images/2013109112914.jpg" />
+						</a>
+						<div class="detBut">
+							<div class="detBDiv">
+								<a href="">iPhone5土豪金贴膜 苹果5S全边框贴纸 金</a>
+							</div>
+							<div class="detBDiv">
+
+								<div>
+									￥9
+								</div>
+								<div>
+									原价:39
+								</div>
+							</div>
+							<div class="detBNum">
+								已售：3421
+							</div>
+						</div>
+					</div>
+
+					<div class="detB">
+
+						<a href="#">
+							<img class="detBimg" src="images/2013109112914.jpg" />
+						</a>
+						<div class="detBut">
+							<div class="detBDiv">
+								<a href="">iPhone5土豪金贴膜 苹果5S全边框贴纸 金</a>
+							</div>
+							<div class="detBDiv">
+
+								<div>
+									￥9
+								</div>
+								<div>
+									原价:39
+								</div>
+							</div>
+							<div class="detBNum">
+								已售：3421
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<!--侧边栏-->
+			<div class="oneFloorSilder">
+				<div class="oneFSildTitle"  >
+					iphone手机壳单品排行榜
+				</div>
+				<dl class="tabRank" id="tabRank">
+
+					<dd class="bd">
+						<ul class="ulList">
+							<li class="t on">
+
+								<div class="c ">
+									<div class="pubpic">
+										<a href="#"><img src="images/1.jpg"></a>
+									</div>
+
+								</div>
+								<div class="pubtitle">
+									<a href="#">iphone4s皮套苹果4手机壳￥45</a>
+								</div>
+							</li>
+							<li class="t">
+
+								<div class="c ">
+									<div class="pubpic">
+										<a href="#"><img src="images/2.jpg"></a>
+									</div>
+								</div>
+								<div class="pubtitle">
+									<a href="#">iphone5s皮套苹果5手机壳￥9</a>
+								</div>
+							</li>
+							<li class="t">
+
+								<div class="c ">
+									<div class="pubpic">
+										<a href="#"><img src="images/1.jpg"></a>
+									</div>
+
+								</div>
+								<div class="pubtitle">
+									<a href="#">iphone4s皮套苹果4手机壳￥45</a>
+								</div>
+							</li>
+							<li class="t">
+
+								<div class="c ">
+									<div class="pubpic">
+										<a href="#"><img src="images/2.jpg"></a>
+									</div>
+								</div>
+								<div class="pubtitle">
+									<a href="#">iphone5s皮套苹果5手机壳￥9</a>
+								</div>
+							</li>
+							<li class="t">
+
+								<div class="c ">
+									<div class="pubpic">
+										<a href="#"><img src="images/1.jpg"></a>
+									</div>
+
+								</div>
+								<div class="pubtitle">
+									<a href="#">iphone4s皮套苹果4手机壳￥45</a>
+								</div>
+							</li>
+							<li class="t">
+
+								<div class="c ">
+									<div class="pubpic">
+										<a href="#"><img src="images/2.jpg"></a>
+									</div>
+								</div>
+								<div class="pubtitle">
+									<a href="#">iphone5s皮套苹果5手机壳￥9</a>
+								</div>
+							</li>
+							<li class="t">
+
+								<div class="c ">
+									<div class="pubpic">
+										<a href="#"><img src="images/1.jpg"></a>
+									</div>
+
+								</div>
+								<div class="pubtitle">
+									<a href="#">iphone4s皮套苹果4手机壳￥45</a>
+								</div>
+							</li>
+							<li class="t">
+
+								<div class="c ">
+									<div class="pubpic">
+										<a href="#"><img src="images/2.jpg"></a>
+									</div>
+								</div>
+								<div class="pubtitle">
+									<a href="#">iphone5s皮套苹果5手机壳￥9</a>
+								</div>
+							</li>
+						</ul>
+
+					</dd>
+
+				</dl>
+			</div>
+
+			</div>
+			<!--每个楼层里面的物品-->
+		
+		</div>
+
+	</body>
+
+</html>
+<script type="text/javascript ">
+	/* 详简切换通过添加on类名和css控制 */
+	$("#tabRank li").hover(function() {
+		$(this).addClass("on").siblings().removeClass("on")
+	}, function() {});
+	/* Tab切换 */
+	$("#tabRank").slide({
+		titCell: "dt h3",
+		mainCell: "dd",
+		autoPlay: false,
+		effect: "left",
+		delayTime: 300
+	});
+</script>
+</script>

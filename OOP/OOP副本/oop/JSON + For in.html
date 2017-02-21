@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		
+		var json = {
+			//必须使用双引号
+			"name":"qw",
+			"password":"阿尼陀佛"
+		}
+		
+		var str = '{"name":"leilei","age":18,"list":[{"user":[{},{},{}]},{"user":[{},{},{}]},{"user":[{},{},{}]}]}';//json字符串
+		var arrStr = '[{"name":"maomao"},{"name":"yubi"},{"name":"mimi"}]';
+		var obj = JSON.parse(arrStr);
+		console.log(obj)
+		
+		var obj = {
+			name:"yulei",
+			password:123
+		}
+		
+		console.log(obj.name);//.不会替换变量的值
+		console.log(obj["password"]);//[]会替换变量的值
+		
+		for(var keys in obj){
+			console.log(typeof keys)
+			console.log(keys)
+			//obj.keys //.keys会默认为找keys的属性,不会替换变量的值
+			console.log(keys + ":"+obj[keys]);//[keys]会替换变量keys的值
+		}
+	</script>
+</html>

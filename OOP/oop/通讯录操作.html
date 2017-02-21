@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>通讯录操作</title>
+		<style type="text/css">
+			body{
+				font-size: 12px;
+			}
+			.box {
+				width: 500px;
+				height: 500px;
+				border: 1px solid black;
+				position: relative;
+			}
+			.menu{
+				width: 500px;
+				height: 100px;
+				/*background-color: wheat;*/
+				position: absolute;
+				left: 30px;
+				top: 0;
+			}
+			#content {
+				width: 298px;
+				height: 300px;
+				/*border: 1px solid pink;*/
+				margin-top: 150px;
+				margin-left: 30px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box">
+			<div class="menu">
+				<button id="btn1">查找</button>:<input id="ipt1" type="" placeholder="请输入姓名或号码"/><br />
+				<button id="btn2">修改</button>:<input id="ipt2" type="" placeholder="请输入修改前姓名或号码" /><input id="ipt22" type="" placeholder = "请输入修改后姓名或号码" /><br />
+				<button id="btn3">增加</button>: <input id="ipt3" type="" placeholder="请输入姓名" /><input id="ipt33" type="" placeholder = "请输入电话号码" /><br />
+				<button id="btn4">删除</button>:<input id="ipt4" type="" placeholder="请输入姓名或号码" /><br />
+			</div>
+
+			<div id="content"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var ipt1 = document.getElementById("ipt1");
+		var ipt2 = document.getElementById("ipt2");
+		var ipt22 = document.getElementById("ipt22");
+		var ipt3 = document.getElementById("ipt3");
+		var ipt33 = document.getElementById("ipt33");
+		var btn1 = document.getElementById("btn1");
+		var btn2 = document.getElementById("btn2");
+		var btn3 = document.getElementById("btn3");
+		var btn4 = document.getElementById("btn4");
+		var content = document.getElementById("content");
+
+		function Person() {
+			this.useArr = [{
+				name: "余蕾",
+				photo: "18895738040"
+			}, {
+				name: "文文",
+				photo: "18895701497"
+			}, {
+				name: "灰灰",
+				photo: "18895737373"
+			}];
+		}
+		
+		Person.prototype.show = function(){
+			content.innerHTML = "";
+			for(var i=0;i<this.useArr.length;i++){
+				content.innerHTML += this.useArr[i].name + ":" + this.useArr[i].photo + "<br>"; 
+			}
+		}
+		//查找
+		Person.prototype.select = function() {
+				for(var i = 0; i < this.useArr.length; i++) {
+					if(ipt1.value == this.useArr[i].name || ipt1.value == this.useArr[i].photo) {
+						alert(this.useArr[i].name + "：" + this.useArr[i].photo);
+						return;
+					}
+				 
+				}
+				alert("通讯录中没有此人");
+			
+				console.log(this.useArr);
+			}
+		//修改
+		Person.prototype.update = function() {
+			for(var i = 0; i < this.useArr.length; i++) {
+				if(ipt2.value == this.useArr[i].name ) {
+					delete(this.useArr[i].name);
+					this.useArr[i].name = ipt22.value;
+					break;
+				}else if(ipt2.value == this.useArr[i].photo){
+					delete(this.useArr[i].photo);
+					this.useArr[i].photo = ipt22.value;
+					break;
+				}else{
+					alert("通讯录中无该联系人");
+					break;
+				}
+			}
+			console.log(this.useArr);
+		}
+				
+		//增加
+		Person.prototype.add = function() {
+			var n = ipt3.value;
+			var p = ipt33.value;
+			var arr = {name:n,photo:p};
+			for(var i = 0; i < this.useArr.length; i++){
+				if(n == this.useArr[i].name && p == this.useArr[i].photo) {
+					alert("通讯录中已有该联系人");
+					break;
+				}else{
+					this.useArr.push(arr);
+					break;
+				}
+			}
+			console.log(this.useArr);
+		}
+		//删除
+		Person.prototype.delet = function() {
+			for(var i = 0; i < this.useArr.length; i++){
+				if(ipt4.value == this.useArr[i].name || ipt4.value == this.useArr[i].photo) {
+					this.useArr.splice(i,1);
+				}
+			}
+			console.log(this.useArr);
+		}
+
+		//实例化对象
+		var person = new Person();
+		console.log(person);
+		
+		//点击事件
+		btn1.onclick = function() {
+			person.select();
+			person.show();
+		}
+		btn2.onclick = function() {
+			person.update();
+			person.show();
+		}
+		btn3.onclick = function() {
+			person.add();
+			person.show();
+		}
+		btn4.onclick = function() {
+			person.delet();
+			person.show();
+		}
+	</script>
+
+</html>

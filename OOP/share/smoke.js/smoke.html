@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>弹出框</title>
+		<link rel="stylesheet" type="text/css" href="smoke.css" />
+	</head>
+
+	<body>
+		<a href="#" id="alert">alert</a>
+		<a href="#" id="signal">signal</a>
+		<a href="#" id="confirm">confirm</a>
+		<a href="#" id="prompt">prompt</a>
+		<a href="#" id="quiz">quiz</a>
+		
+	</body>
+	<script src="JQuery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="smoke.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		/*alert*/
+		//alert()效果--smoke.alert(string, fn,obj)
+		//string--弹出框文字内容，fn--回调函数，obj--{ok:'按钮文字',cancel:'取消按钮文字',classname:'叠加的弹窗框样式名'}
+		$('#alert').on('click', function(e) {
+			var ev = e || window.event;
+			ev.preventDefault();//方法阻止元素发生默认的行为
+			smoke.alert("Can I ask you a question?", function(e) {
+
+			}, {
+				ok: "Yep", //确定按钮文字
+				cancel: "Nope", //取消按钮文字
+				classname: "custom-class" //弹出框样式
+			});
+		});
+		
+		/*signal*/
+		$('#signal').on('click', function(e) {
+			var ev = e || window.event;
+			ev.preventDefault();
+			smoke.signal('Congratulations!', function() {}, {
+				duration: 1000,//duration:1000设置延迟时间为1000毫秒
+				classname: "custom-class"
+			});　　 
+		});
+		
+		/*confirm*/
+		$('#confirm').on('click', function(e) {
+			var ev = e || window.event;
+			ev.preventDefault();
+			smoke.confirm("你是个好人吗？", function(e) {
+				if(e) { //确定按钮回调
+					smoke.alert("666，你6，还是你6", function(e) {
+
+					}, {
+						ok: "Yep", //确定按钮文字
+						cancel: "Nope", //取消按钮文字
+						classname: "custom-class" //弹出框样式
+					}); 
+				} else { //取消按钮回调
+					smoke.signal('对方无答复', function() {}, {
+						duration: 1000,
+						classname: "custom-class"
+					});
+				}
+			}, {
+				reverseButtons: true, //确定和取消按钮哪个在前；true ok按钮在前，false cancel按钮在前
+				classname: "custom-class",
+				ok: "YES", //确定文字
+				cancel: "NO" //取消文字
+			});
+		});
+
+		/*prompt*/
+		$('#prompt').on('click', function(e) {
+			var ev = e || window.event;
+			ev.preventDefault();
+
+			smoke.prompt("What's in the bag?", function(e) {
+				
+				if(e) { //确定按钮回调
+					smoke.alert("i need money,give me", function(e) {
+
+					}, {
+						ok: "sure", //确定按钮文字
+						cancel: "no", //取消按钮文字
+						classname: "custom-class" //弹出框样式
+					});
+				} else {
+					console.log(random(1,100));
+					console.log(123);
+				}
+			}, {
+				ok: "have a look",
+				cancel: "none of your things",
+				classname: "custom-class",
+				reverseButtons: true,
+				value: "money"
+			});
+		});
+
+		/*quiz*/
+		$("#quiz").on("click", function(e) {
+			var ev = e || window.event;
+			ev.preventDefault();
+			smoke.quiz("Which is your favorite?", function(e) {
+				if(e == 'DISCO') {　　 //点击每个按钮的触发的效果
+					smoke.signal('nope. it\'s funk.');
+				}
+				if(e == 'REGGAE') {
+					smoke.signal('nope. it\'s disco.');
+
+				}
+				if(e == 'FUNK') {
+					smoke.signal('nope. it\'s reggae.');
+				}
+			}, {
+				button_1: "DISCO", //多按钮（最多三个）
+				button_2: "GAME",
+				button_3: "APPLE",
+				button_cancel: "NONE OF THEM" //取消按钮
+			});
+		})
+		
+		
+		function random(min,max){
+			return parseInt(Math.random()*(max-min+1))+min;
+		}
+	</script>
+
+</html>

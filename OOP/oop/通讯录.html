@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input type=""  name="" id="name" value=""/>
+		<input type=""  name="" id="photo" value=""/>
+		<input type="button"  name="insert" id="insert" value="添加"/>
+		<input type="button"  name="update" id="update" value="修改"/>
+		<input type="button"  name="select" id="select" value="查询"/>
+		<div id="content"></div>
+	</body>
+	<script type="text/javascript">
+		var namees = document.getElementById("name");
+		var photo = document.getElementById("photo");
+		var content = document.getElementById("content");
+		
+		
+		function Mail(){
+			this.userList = [];
+			
+		}
+		Mail.prototype.insert = function(name,photo){
+			var obj={};
+			obj.name = name;
+			obj.photo = photo;
+			this.userList.push(obj);
+			console.log(this.userList);
+		}
+		Mail.prototype.delete = function(){
+			
+		}
+		Mail.prototype.update = function(name,photo){
+			for(var i=0;i<this.userList.length;i++){
+				if(this.userList[i].name == name){
+					this.userList[i].photo = photo;
+				}
+			}
+			console.log("修改完之后");
+			console.log(this.userList);
+		}
+		Mail.prototype.show = function(){
+			content.innerHTML = "";
+			for(var i=0;i<this.userList.length;i++){
+				var p = document.createElement("p");
+				p.innerHTML = this.userList[i].name+ ":"+this.userList[i].photo;
+				content.appendChild(p);
+			}
+		}
+		
+		Mail.prototype.selectByName = function(name){
+			content.innerHTML = "";
+			for(var i=0;i<this.userList.length;i++){
+				if(this.userList[i].name == name){
+					var p = document.createElement("p");
+				    p.innerHTML = this.userList[i].name+ ":"+this.userList[i].photo;
+				   content.appendChild(p);
+				   break;
+				}
+			}
+		}
+		
+		var mail = new Mail();
+		
+		document.addEventListener("click",function(e){
+			var ev = e || window.event;
+			var names = namees.value;
+			var photos = photo.value;
+			console.log(names,photos);
+			if(ev.target.id == "insert"){
+				console.log("我是insert");
+				mail.insert(names,photos);
+				mail.show();
+			}else if(ev.target.id == "update"){
+				mail.update(names,photos);
+				mail.show();
+			}else if(ev.target.id == "select"){
+//				mail.show();
+				mail.selectByName(names);
+
+			}
+		},false);
+	</script>
+</html>

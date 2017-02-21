@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>SuperSlide - 焦点图/幻灯片</title>
+		<script type="text/javascript" src="js/jquery1.42.min.js"></script>
+		<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/focus.css"/>
+	</head>
+
+	<body>
+		<div id="slideBox" class="slideBox">
+			<div class="hd">
+				<ul>
+					<li>1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+					<li>5</li>
+				</ul>
+			</div>
+			<div class="bd">
+				<ul>
+					<li><img src="img/1.jpeg" /></a>
+					</li>
+					<li><img src="img/2.jpeg" /></a>
+					</li>
+					<li><img src="img/3.jpeg" /></a>
+					</li>
+					<li><img src="img/4.jpeg" /></a>
+					</li>
+					<li><img src="img/5.jpeg" /></a>
+					</li>
+				</ul>
+			</div>
+			<!-- 下面是前/后按钮代码，如果不需要删除即可 -->
+			<a class="prev" href="javascript:void(0)"></a>
+			<a class="next" href="javascript:void(0)"></a>
+		</div>
+		<script type="text/javascript">
+			jQuery(".slideBox").slide({
+				mainCell: ".bd ul",//切换元素的包裹层对象
+				autoPlay: true//自动播放  默认false
+			});
+		</script>
+	</body>
+
+</html>

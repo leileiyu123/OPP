@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>房产证2</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#myCanvas{
+				box-shadow: 0 0 3px grey;
+			}
+			input:focus{
+				outline: none;
+			}
+			#name{
+				height: 25px;
+				position: absolute;
+				left: 190px;
+				top: 160px;
+				z-index: 4;
+			}
+			#time{
+				height: 25px;
+				position: absolute;
+				left: 190px;
+				top: 285px;
+				z-index: 4;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		<input id="name" />
+		<input id="time" />
+		<button onclick="sub()">购买</button>
+		<a id="as" href="" onclick="sub()">跳转</a>
+		
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var names = document.getElementById("name");
+		var times = document.getElementById("time");
+		var as = document.getElementById("as");
+		
+		var img = new Image();
+		img.src = "../img/66A7B05FB5E42F66927D19967FE047FA.jpg";
+		var url = "";
+		img.onload = function(){
+			//因为我只有在图片加载完成的时候得到的img对象才是我想要在
+			//canvas上面绘制的，所以我需要在img.onload方法中绘制我的图片
+			//但是当该方法执行的时候是页面还没有呈现出来的时间
+			//所以用户不可能已经对我们的input框进行操作了
+			context.drawImage(img,0,0,600,600);
+			//所以此时如果你去获取input的值给他绘制
+			//到我们的canvas上面那必然是绘制了一个空字符串
+			//就等于没有任何效果
+//			var namess = names.value;
+//			context.beginPath();
+//			context.fillStyle = "gray";
+//			context.fillText(namess,200,180);
+//			url = canvas.toDataURL();
+		}
+		
+		function sub(){
+			//当我们进去了按钮点击方法时，就代表
+			//此时用户已经填写好了他想要的用户名和时间
+			//所以此时我们就可以获取我们的input框中的信息
+			//然后绘制到我们的canvas上面了
+			var namess = names.value;
+			context.beginPath();
+			context.fillStyle = "gray";
+			context.fillText(namess,200,180);
+			
+			var timess = times.value;
+			context.beginPath();
+			context.fillStyle = "gray";
+			context.fillText(timess,200,305);
+			//当我们的文字绘制到我们的canvas上面以后
+			//此时canvas上面的内容就是我们想要做成图片的样子了
+			//所以我就可以使用我们生成图片的方法进行生成了
+			
+			//第二中方式：需要将我们生成的图片的url的类型换成image/octet-stream这样当你点击我们的
+			//a标签的时候浏览器就知道我们要进行下载了
+			url = canvas.toDataURL('image/jpeg',0.5).replace("image/jpeg", "image/octet-stream");//对图片质量做处理,要有jpeg + 级别(0-1)
+			as.href = url;
+			
+			//第一种方式就是使用a标签的download属性
+			//download属性设置成什么，下载下来的文件名就是什么
+//			as.download = "imgs.jpg";
+//			as.click();
+
+//			window.location.href = url;
+		}
+		
+	</script>
+</html>

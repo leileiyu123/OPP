@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#myCanvas{
+				border: 2px solid #8B4513;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		function random(min,max){
+			return parseInt(Math.random()*(max-min+1))+min;
+		}
+		function Circle(x,y,r,color,spX,spY,update){
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.color = color;
+			this.spX = spX;
+			this.spY = spY;
+			this.update = false;
+		}
+		Circle.prototype.draw = function(){
+			context.beginPath();
+			context.arc(this.x,this.y,this.r,0,360*deg);
+			context.fillStyle = this.color;
+			context.fill();
+		}
+		Circle.prototype.move = function(){
+			if(this.x+this.r>canvas.width || this.x-this.r<0){
+				this.spX *= -1;
+			}
+			if(this.y+this.r>canvas.height || this.y-this.r<0){
+				this.spY *= -1;
+			}
+			this.update = false;
+			this.x += this.spX;
+			this.y += this.spY;
+		}
+		
+		
+		var circleArr = [];
+		for(var i=0;i<5;i++){
+			var r = random(20,40);
+			var x = random(r,canvas.width-r);
+			var y = random(r,canvas.height-r);
+			var color = "rgb("+random(0,255)+","+random(0,255)+","+random(0,255)+")";
+			var spX = random(-5,5);
+			var spY = random(-5,5);
+			var num = random(1,5);
+			if(spX == 0 || spY ==0){
+				spX = num;
+				spY = num;
+			}
+			var circle = new Circle(x,y,r,color,spX,spY);
+			circleArr.push(circle);
+		}
+		
+		//两球碰撞检测
+		function peng(obj1,obj2){
+			var x =obj1.x-obj2.x;
+			var y = obj1.y-obj2.y;
+			var r = obj1.r+obj2.r;
+			if(Math.sqrt(Math.pow(x,2)+Math.pow(y,2))<=r){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		function ani(){
+			context.clearRect(0,0,canvas.width,canvas.height);
+			for(var i=0;i<circleArr.length;i++){
+				circleArr[i].draw();
+				circleArr[i].move();
+				
+			}
+			for(var i=0;i<circleArr.length;i++){
+				for(var j=1;j<circleArr.length;j++){
+					if(i!=j){
+						if(peng(circleArr[i],circleArr[j])){
+							if(circleArr[i].update == false){
+								circleArr[i].spX *= -1;
+								circleArr[i].spY *= -1;
+								circleArr[i].update = true;
+							}
+							if(circleArr[j].update == false){
+								circleArr[j].spX *= -1;
+								circleArr[j].spY *= -1;
+								circleArr[j].update = true;
+							}
+						}
+						
+					}
+				}
+			}
+			window.requestAnimationFrame(ani);
+
+		}
+		ani();
+	</script>
+</html>

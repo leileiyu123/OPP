@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app="test">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body ng-controller="aaa">
+		<input type="text" name="" id="" value="" ng-model="str" />
+		<input type="button" name="" id="" value="按钮" ng-click="alert(str)"/>
+	</body>
+	<script src="angular.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var app = angular.module("test",[]);
+		app.controller("aaa",function($scope){
+			$scope.alert=function(s){
+				window.alert(s);
+			}
+		})
+	</script>
+</html>

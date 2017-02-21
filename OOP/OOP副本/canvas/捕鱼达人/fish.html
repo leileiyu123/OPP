@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html{
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="1024" height="768"></canvas>
+	</body>
+	<script type="text/javascript">
+		var oc = document.getElementById('canvas');
+		var ctx = oc.getContext('2d');
+		var ih = 768;
+		var iw = 1024;
+		var viewHeight = document.documentElement.clientHeight;
+		var cannonWidth = 57;
+		var cannonHeight = 64;
+		var cannonRotate = 0;
+		var bulletWidth = 24;
+		var bulletHeight = 26;
+		var bulletSpeed = 5;//通过直角三角形分为x，y
+		var bulletData = [];//手机所有子弹
+		var bulletRotate = 0;
+		
+		ih = viewHeight < ih?viewHeight:ih;
+		loadImgs(["bg.jpg","bullet.png","cannon.png","fish.png","gold.png"],
+		function(imgs) {
+			setInterval(function(){
+				ctx.clearRect(0,0,oc.width,oc.height);
+				
+				//速度
+				for (var i = 0; i < bulletData.length;i++) {
+					bulletData[i].x += bulletData[i].sX;
+					bulletData[i].y += bulletData[i].sY;
+					//子弹出了可视区域
+					if (bulletData[i].x<0||bulletData[i].y<0||bulletData[i].x>iw) {
+						bulletData.splice(i,1);
+					}
+				}
+				//背景
+				ctx.save();
+				var bg = ctx.createPattern(imgs['bg'],'no-repeat');
+				ctx.fillStyle = bg;
+				ctx.fillRect(0,0,iw,ih)
+				ctx.restore();
+				
+				//子弹
+				for (var i = 0; i < bulletData.length;i++) {
+					ctx.save();
+					ctx.translate(bulletData[i].x,bulletData[i].y);
+					ctx.rotate(bulletData[i].r);
+					ctx.translate(-bulletWidth/2,-bulletHeight/2);
+					ctx.drawImage(imgs['bullet'],0,0,bulletWidth,bulletHeight);
+					ctx.restore();
+				}
+				
+				//炮筒
+				ctx.save();
+				ctx.translate(iw/2,ih-cannonHeight/2);
+				ctx.rotate(cannonRotate);
+				ctx.translate(-cannonWidth/2, -cannonHeight/2);
+				ctx.drawImage(imgs['cannon'],0,0,cannonWidth,cannonHeight);
+				ctx.restore();
+				
+			},1000/60);
+			oc.onmousemove = function(ev) {
+				var x = ev.pageX - oc.offsetLeft;
+				var y = ev.pageY - oc.offsetTop;
+				var a = x - iw/2;
+				var b = y - ih - cannonHeight/2;
+				var c = Math.sqrt(a*a+b*b);
+				
+				cannonRotate = Math.asin(a/c);//获得的弧度
+			}
+			oc.onmousedown = function (ev) {
+				var x = ev.pageX - oc.offsetLeft;
+				var y = ev.pageY - oc.offsetTop;
+				var a = x - iw/2;
+				var b = y - ih - cannonHeight/2;
+				var c = Math.sqrt(a*a+b*b);
+				var sX = bulletSpeed * a/c;
+				var sY = bulletSpeed * b/c;
+				bulletRotate = Math.asin(a/c);
+				bulletData.push({
+					x:iw/2,
+					y:ih-cannonHeight/2,
+					sX:sX,
+					sY:sY,
+					r:bulletRotate,
+				})
+			}
+		})
+		
+		function loadImgs (arr,fnSucc) {
+			var iNow = 0;
+			var json = {};
+			for (var i = 0 ; i < arr.length; i++) {
+				var img = new Image();
+				img.onload = function(){
+					iNow++;
+					if (iNow == arr.length) {
+						fnSucc(json);
+					}
+				}
+				img.src ="img/" + arr[i];
+				var name = arr[i].split('.')[0];
+				json[name] = img;
+	
+			}
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+	</script>
+</html>

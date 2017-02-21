@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		function $(arg){
+			return new Jq(arg);
+		}
+		function ready(fn){
+			if(window.addEventListener){
+				document.addEventListener("DOMContentLoaded",fn,false);
+			}else{
+				var os = document.createElement("script");
+				os.defer = true;
+				os.onreadystatechange = function(){
+					if(os.readyState == "complete"){
+						fn();
+					}
+				}
+				var oh = document.getElementsByTagName("head")[0];
+				oh.appendChild(os);
+			}
+			
+		}
+		function Jq(arg){
+			this.elements = [];
+			if(typeof arg == "string"){
+				this.elements = selectEl(arg);
+			}else if(typeof arg == "function"){
+				ready(arg);
+			}else{
+				this.elements.push(arg);
+			}
+		}
+		Jq.prototype.eq = function(index){
+			return $(this.elements[index]);
+		}
+		function addEvent(obj,eventName,fn){
+			if(obj.addEventListener){
+				obj.addEventListener(eventName,fn,false);
+			}else{
+				obj.attachEvent("on"+eventName,fn);
+			}
+		}
+		Jq.prototype.on = function(fn){
+			for(var i=0;i<this.elements.length;i++){
+				addEvent(this.elements[i],"click",fn);
+			}
+		}
+		Jq.prototype.click = function(eventSrc,fn){
+			var eventArr = eventSrc.split(" ");
+			for(var i=0;i<eventArr.length;i++){
+				for(var j=0;j<this.elements.length;j++){
+					addEvent(this.elements[j],eventArr[i],fn);
+				}
+			}
+		}
+		Jq.prototype.css = function(){
+			if(arguments.length == 1){
+				if(typeof arguments[0] == "string"){
+					return getStyle(this.elements[0],arguments[0]);
+				}else{
+					for(var keys in arguments[0]){
+						for(var i=0;i<this.elements.length;i++){
+							setStyle(this.elements[i],keys,arguments[0][keys]);
+						}
+					}
+				}
+			}
+		}
+	</script>
+</html>

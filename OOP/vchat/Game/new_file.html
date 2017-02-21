@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>Swiper demo</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+
+		<!-- Link Swiper's CSS -->
+		<link rel="stylesheet" href="swiper.min.css">
+
+		<!-- Demo styles -->
+		<style>
+			*,body{
+				margin: 0;
+				padding: 0;
+			}
+			html,
+			body {
+				position: relative;
+				height: 100%;
+			}
+			
+			body {
+				background: #eee;
+				font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+				font-size: 14px;
+				color: #000;
+				margin: 0;
+				padding: 0;
+			}
+			
+			.swiper-container {
+				width: 100%;
+				height: 100%;
+			}
+			
+			.swiper-slide {
+				text-align: center;
+				font-size: 18px;
+				background: #fff;
+				/* Center slide text vertically */
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-pack: center;
+				-ms-flex-pack: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-ms-flex-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+			}
+			/*.swiper-pagination{
+				width: 55px;
+				height: 55px;
+				
+				position: absolute;
+				bottom: 500px;
+				left: 10px;
+			}*/
+			#wrap {
+				position: relative;
+				text-align: center;
+			}
+			.bg2 {
+				width: 100%;
+				height: 100%;
+			}
+			.person1 {
+				width: 40%;
+				position: absolute;
+				left: 120px;
+				top: 32px;
+			}
+			.person2{
+				width: 55%;
+				position: absolute;
+				left: 120px;
+				top: 50px;
+			}
+			.person3{
+				width: 45%;
+				position: absolute;
+				left: 110px;
+				top: 25px;
+			}
+			.person4{
+				width: 45%;
+				position: absolute;
+				left: 110px;
+				top: -15px;
+			}
+			.person5{
+				width: 45%;
+				position: absolute;
+				left: 100px;
+				top: 25px;
+			}
+			#choose {
+				position: absolute;
+				bottom: 130px;
+				left: 10px;
+			}
+			#choose>div {
+				float: left;
+				margin-right: -40px;
+			}
+			
+			#choose>div>img {
+				width: 55%;
+			}
+			#btn {
+				position: absolute;
+				bottom: 60px;
+			}
+			#btn img {
+				width: 50%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!-- Swiper -->
+		<div class="swiper-container">
+			<div class="swiper-wrapper">
+				
+				<div class="swiper-slide">
+					<!--白客页面-->
+					<div id="wrap">
+						<img class="bg2" src="img/小样++游戏页面/人物选择页/白客/大背景.png" />
+						<img class="person1" src="img/小样++游戏页面/人物选择页/白客/人物选择－白客.png" />
+						<div id="choose">
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/白客/头像－白客.png" />
+								<p style="color:red">白客</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/白客/头像－韩雪.png" />
+								<p>韩雪</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/白客/头像－明道.png" />
+								<p>明道</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/白客/头像－刘语熙.png" />
+								<p>刘语熙</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/白客/头像－徐开骋.png" />
+								<p>徐开骋</p>
+							</div>
+						</div>
+						<div id="btn">
+							<img src="img/小样++游戏页面/人物选择页/刘语熙/按钮－松开.png">
+						</div>
+					</div>
+				</div>
+				
+				<div class="swiper-slide">
+					<!--韩雪页面-->
+					<div id="wrap">
+						<img class="bg2" src="img/小样++游戏页面/人物选择页/韩雪/大背景.png" />
+						<img class="person2" src="img/小样++游戏页面/人物选择页/韩雪/人物选择－韩雪.png" />
+						<div id="choose">
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/韩雪/头像－白客.png" />
+								<p>白客</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/韩雪/头像－韩雪.png" />
+								<p>韩雪</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/韩雪/头像－明道.png" />
+								<p>明道</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/韩雪/头像－刘语熙.png" />
+								<p>刘语熙</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/韩雪/头像－徐开骋.png" />
+								<p>徐开骋</p>
+							</div>
+						</div>
+						<div id="btn">
+							<img src="img/小样++游戏页面/人物选择页/韩雪/按钮－松开.png">
+						</div>
+					</div>
+				</div>
+				
+				<div class="swiper-slide">
+					<!--明道页面-->
+					<div id="wrap">
+						<img class="bg2" src="img/小样++游戏页面/人物选择页/明道/大背景.png" />
+						<img class="person3" src="img/小样++游戏页面/人物选择页/明道/人物选择－明道.png" />
+						<div id="choose">
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/明道/头像－白客.png" />
+								<p>白客</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/明道/头像－韩雪.png" />
+								<p>韩雪</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/明道/头像－明道.png" />
+								<p>明道</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/明道/头像－刘语熙.png" />
+								<p>刘语熙</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/明道/头像－徐开骋.png" />
+								<p>徐开骋</p>
+							</div>
+						</div>
+						<div id="btn">
+							<img src="img/小样++游戏页面/人物选择页/明道/按钮－松开.png">
+						</div>
+					</div>
+				</div>
+				
+				<div class="swiper-slide">
+					<!--刘语熙页面-->
+					<div id="wrap">
+						<img class="bg2" src="img/小样++游戏页面/人物选择页/刘语熙/大背景.png" />
+						<img class="person4" src="img/小样++游戏页面/人物选择页/刘语熙/人物选择-刘语熙.png" />
+						<div id="choose">
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/刘语熙/头像－白客.png" />
+								<p>白客</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/刘语熙/头像－韩雪.png" />
+								<p>韩雪</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/刘语熙/头像－明道.png" />
+								<p>明道</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/刘语熙/头像-刘语熙.png" />
+								<p>刘语熙</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/刘语熙/头像－徐开骋.png" />
+								<p>徐开骋</p>
+							</div>
+						</div>
+						<div id="btn">
+							<img src="img/小样++游戏页面/人物选择页/明道/按钮－松开.png">
+						</div>
+					</div>
+				</div>
+				
+				<div class="swiper-slide">
+					<!--徐开骋页面-->
+					<div id="wrap">
+						<img class="bg2" src="img/小样++游戏页面/人物选择页/徐开骋/大背景.png" />
+						<img class="person5" src="img/小样++游戏页面/人物选择页/徐开骋/人物选择-徐开骋.png" />
+						<div id="choose">
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/徐开骋/头像－白客.png" />
+								<p>白客</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/徐开骋/头像－韩雪.png" />
+								<p>韩雪</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/徐开骋/头像－明道.png" />
+								<p>明道</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/徐开骋/头像－刘语熙.png" />
+								<p>刘语熙</p>
+							</div>
+							<div>
+								<img src="img/小样++游戏页面/人物选择页/徐开骋/头像-徐开骋.png" />
+								<p>徐开骋</p>
+							</div>
+						</div>
+						<div id="btn">
+							<img src="img/小样++游戏页面/人物选择页/徐开骋/按钮－松开.png">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Add Pagination -->
+			<!--每页对应按钮-->
+			<div class="swiper-pagination">
+					
+			</div>
+		</div>
+
+		<!-- Swiper JS -->
+		<script src="swiper.min.js"></script>
+
+		<!-- Initialize Swiper -->
+		<script>
+			var swiper = new Swiper('.swiper-container', {
+				pagination: '.swiper-pagination',
+				paginationClickable: true
+			});
+		</script>
+	</body>
+
+</html>

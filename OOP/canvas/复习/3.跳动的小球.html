@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#myCanvas{
+				border: 2px solid #8B4513;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+		function random(min,max){
+			return parseInt(Math.random()*(max-min+1))+min;
+		}
+		
+		function Qiu(x, y, r, color,spX,spY) {
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.color = color;
+			this.spX = spX;
+			this.spY = spY;
+		}
+		
+		Qiu.prototype.draw = function(){
+			context.beginPath();
+			context.arc(this.x,this.y,this.r,0,360*deg);
+			context.fillStyle = this.color;
+			context.fill();
+		}
+		
+		Qiu.prototype.move = function(){
+			if(this.x-this.r<0 || this.x+this.r>canvas.width){
+				this.spX *= -1;
+			}
+			if(this.y + this.r >= canvas.height || this.y-this.r<=0){
+				this.spY *= -1;
+			}
+			this.x +=this.spX;
+			this.y += this.spY;
+		}
+		
+		
+		
+		var arr = [];
+		for(var i=0;i<100;i++){
+			var r = random(10,30);
+			var x = random(r,canvas.width-r);
+			var y = random(r,canvas.height-r);
+			var c = "rgb("+random(0,255)+","+random(0,255)+","+random(0,255)+")";
+			var num = random(1,5);
+			var spX = random(-5,5);
+			var spY = random(-5,5);
+			if(spX==0||spY==0){
+				spX = num;
+				spY = num;
+			}
+			var qiu = new Qiu(x,y,r,c,spX,spY);
+			arr.push(qiu);
+		}
+		
+		function ani(){
+			context.clearRect(0,0,canvas.width,canvas.height);
+			for(var i =0;i<arr.length;i++){
+				arr[i].draw();
+				arr[i].move();
+			}
+			
+			window.requestAnimationFrame(ani);
+		}
+		ani();
+	</script>
+</html>

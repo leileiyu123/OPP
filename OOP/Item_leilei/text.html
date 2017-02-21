@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src = "js/angular.min.js"></script>
+	</head>
+	<body ng-app="" ng-init="arr=[1,2,3]">
+		<div ng-include="'register.html'"></div>
+		<div ng-repeat="x in arr" style="width: 100px;height: 100px;background-color: royalblue;">
+			{{x}}
+		</div>
+	</body>
+</html>

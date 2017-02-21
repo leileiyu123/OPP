@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>载入图片</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 3px red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		
+		var img = new Image();
+		img.src =" ../img/1.jpeg";
+		img.onload = function(){
+			context.drawImage(img,100,100,300,300);
+			context.drawImage(img,100,100,300,300,10,10,600,600);
+		}
+		
+	</script>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>房产证</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#myCanvas{
+				box-shadow: 0 0 3px grey;
+			}
+			input:focus{
+				outline: none;
+			}
+			#ipt1{
+				height: 25px;
+				position: absolute;
+				left: 190px;
+				top: 160px;
+				z-index: 4;
+			}
+			#ipt2{
+				height: 25px;
+				position: absolute;
+				left: 190px;
+				top: 285px;
+				z-index: 4;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		<input id="ipt1" />
+		<input id="ipt2" />
+		<a id="as" href="">保存图片</a>
+		<a id="as1" href="" >下载</a>
+		
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var ipt1 = document.getElementById("ipt1");
+		var ipt2 = document.getElementById("ipt2");
+		var as = document.getElementById("as");
+		var as1 = document.getElementById("as1");
+		
+		var img = new Image();
+		img.src = "../img/66A7B05FB5E42F66927D19967FE047FA.jpg";
+		img.onload = function(){
+			context.drawImage(img,0,0,600,600);
+		}
+		//写字
+		function drawText(){
+			context.beginPath();
+			context.fillStyle = "gray";
+			context.fillText(ipt1.value,200,180);
+		
+			context.beginPath();
+			context.fillStyle = "gray";
+			context.fillText(ipt2.value,200,305);
+		}
+		//保存图片
+		as.onclick = function(){
+			drawText();
+			var url = canvas.toDataURL();
+			as.href = url;
+			
+		}
+		//下载
+		as1.onclick = function(){
+			drawText();
+			var url = canvas.toDataURL();
+			as1.href = url;
+			as1.download = url;
+		}
+	</script>
+</html>

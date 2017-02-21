@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>拖拽碰撞</title>
+		<style type="text/css">
+			#myCanvas {
+				border: 2px solid #8B4513;
+				margin: 50px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="myCanvas" width="700" height="700"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+
+		function Rect(x, y, w, h, color) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.color = color;
+		}
+
+		Rect.prototype.draw = function() {
+			context.beginPath();
+			context.rect(this.x, this.y, this.w, this.h);
+			context.fillStyle = this.color;
+			context.fill();
+			if(arguments.length == 2) {
+				if(context.isPointInPath(arguments[0], arguments[1])) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		var rect1 = new Rect(100, 100, 80, 80, "red");
+		var rect2 = new Rect(400, 400, 80, 80, "blue");
+		var arr = [rect1, rect2];
+
+		for(var i = 0; i < arr.length; i++) {
+			arr[i].draw();
+		}
+
+		canvas.onmousedown = function(e) {
+			var ev = e || window.event;
+			var x = ev.clientX - canvas.offsetLeft;
+			var y = ev.clientY - canvas.offsetTop;
+
+			for(var i = 0; i < arr.length; i++) {
+				if(arr[i].draw(x, y)) {
+					var disX = x - arr[i].x;
+					var disY = y - arr[i].y;
+					(function(i, disX, disY) {
+						document.onmousemove = function(e) {
+							var ev = e || window.event;
+							var x = ev.clientX - canvas.offsetLeft - disX;
+							var y = ev.clientY - canvas.offsetTop- disY;
+							arr[i].x = x;
+							arr[i].y = y;
+							context.clearRect(0, 0, canvas.width, canvas.height);
+							for(var j = 0; j < arr.length; j++) {
+								arr[j].draw();
+							}
+							console.log("碰上没"+peng(arr[0],arr[1]));
+						}
+					})(i, disX, disY)
+					document.onmouseup = function(){
+						document.onmousemove = "";
+					}
+				}
+			}
+		}
+		function peng(obj1,obj2){
+			var t1 = obj1.y;
+			var b1 = obj1.y + obj1.h;
+			var l1 = obj1.x;
+			var r1 = obj1.x + obj1.w;
+		
+			var t2 = obj2.y;
+			var b2 = obj2.y+obj2.h;
+			var l2 = obj2.x;
+			var r2 = obj2.x + obj2.w;
+			if(t1<b2 && b1>t2 && l1<r2 && r1> l2){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	</script>
+
+</html>

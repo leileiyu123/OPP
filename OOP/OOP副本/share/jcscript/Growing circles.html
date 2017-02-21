@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Growing circles</title>
+		<style type="text/css">
+			#idCanvas {
+				box-shadow: 0 0 3px red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="idCanvas" width="600" height="600"></canvas>
+		<button id="start_1" onclick="start_1()">start_1</button>
+		<button id="stop_1" onclick="stop_1()">stop_1</button>
+	</body>
+	<script src="jCanvaScript.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		
+		var interval_1 = 0;
+
+		function startShow() {
+			var r = Math.floor(Math.random() * (254)),
+				g = Math.floor(Math.random() * (254)),
+				b = Math.floor(Math.random() * (254)),
+				x = Math.floor(Math.random() * (600)),
+				y = Math.floor(Math.random() * (600)),
+				color = "rgba(" + r + ", " + g + ", " + b + ", 0.5)",
+				filled = true,
+				radius = 1;
+			jc.circle(x, y, radius, color, filled)
+				.animate({
+					radius: 100,
+					opacity: 0
+				}, 1500, function() {
+					this.del();
+				});
+		}
+
+		function onload_1() {
+			jc.start("idCanvas", true);
+			interval_1 = setInterval(startShow, 200);
+		}
+		onload_1();
+
+		function start_1(idCanvas) {
+			if(interval_1) return;
+			onload_1();
+		}
+
+		function stop_1(idCanvas) {
+			clearInterval(interval_1);
+			interval_1 = 0;
+			jc.clear(idCanvas);
+		}
+	</script>
+
+</html>

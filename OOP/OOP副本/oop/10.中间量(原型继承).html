@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		function Person(){}
+		Person.prototype.ccc = function(){
+			console.log("我是父亲");
+		}
+		
+		function Student(){}
+		
+		//要实现完美的原型继承需要放在不同的地址上
+		//所以我们使用了一个中间人：另一个构造函数
+		//因为这个构造函数内容是空的，原型的内容
+		//是我们父类的内容，所以我们对Lin实例化
+		//出来的对象就是一个新的地址下的内容和父类
+		//原型内容一样的值，此时把这个新的地址下的
+		//对象赋值给我们的子类的原型，再修改子类原型
+		//上的内容就不会影响到我们父类了
+		function Lin(){}
+		Lin.prototype =  Person.prototype;
+		var proto = new Lin();
+		Student.prototype = proto;
+		
+		console.log(Student.prototype.constructor);
+		//虽然上面代码实现了我们原型地址的分离，但是
+		//原型继承的还不完美，因为我们的constructor
+		//应该指向我们原型对应的构造函数，因为
+		//原型继承的constructor是我们父类的所以这里
+		//我们需要重新指向回我们的子类，到此原型继承结束
+		Student.prototype.constructor = Student;
+		console.log(Student.prototype.constructor);
+		
+		Student.prototype.ccc = function(){
+			console.log("hah我是子类");
+		}
+		
+		
+		var person = new Person();
+		person.ccc();
+		
+		var stu = new  Student();
+		stu.ccc();
+	</script>
+</html>

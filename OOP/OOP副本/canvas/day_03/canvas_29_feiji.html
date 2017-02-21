@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title></title>
+		<style type="text/css">
+			body,html{
+				margin: 0px;
+				padding: 0px;
+			}
+			#myCanvas{
+				box-shadow: 0 0 3px antiquewhite;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="" height=""></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		//预加载方法
+		function loading(objImg,obj){
+			//用来储存我们一共需要加载的图片数量
+			var length = 0;
+			for (var keys in objImg) {
+				length++;
+			}
+			//用来储存我们当前加载完成的图片数量
+			var num = 0;
+			//储存我们的img对象的
+			var imgObj = {};
+			for (var keys in objImg) {
+				var img = new Image();
+				img.src = objImg[keys];
+//				img.keyss = keys;
+				//因为闭包是匿名函数的自执行
+				//所以这里相当于把我们的匿名函数
+				//执行了，而匿名函数执行时我们
+				//this的指向就是我们的window
+				img.onload = (function(keyy,imgs){
+					//在该闭包中我们让这个匿名函数
+					//返回出去了一个方法，所以最终
+					//实现的效果就是给我们的img.onload
+					//绑定了一个方法，只不过这个方法中
+					//使用的就是我们当前的循环变量不再是
+					//我们循环结束后的最后一个值了
+					//而此时当这个方法执行时真正的
+					//执行者就是我们的当前加载好的
+					//图片，所以此时的this就是我们的
+					//img对象
+					return function(){
+						num++;
+						imgObj[keyy] = this;
+						var loads = num/length;
+						//如果设置了获取进度的方法
+						//就在每次进度发生变化也就是
+						//我们又有一张图片加载完成的
+						//时候帮我们的用户调用我们的
+						//进度方法，并将进度传递进去
+						if(obj.ccc){
+							obj.ccc(loads);
+						}
+						//当我们加载完成的图片数量
+						//大于等于我们总得图片数量的
+						//时候就代表此时如果用户需要我们
+						//帮他调用完成方法，我们就需要
+						//帮用户调用完成方法并将我们
+						//加载好img对象用来储存在imgObj对象
+						//传入我们的完成方法中这样我们就能够在
+						//完成方法中接受到我们的对象并进行使用了
+						if(num>=length){
+							if(obj.complete){
+								obj.complete(imgObj);
+							}
+						}
+					}
+				})(keys,img)
+				
+			}
+		}
+		
+		//预加载方法能够帮我们实现
+		//图片的加载以及加载完成后调用我们
+		//想要执行的方法，并有进度传递
+		loading({
+			"bg":"img/background.png",
+			"hero":"img/herofly.png",
+			"bullet":"img/bullet2.png",
+			"enemy1":"img/enemy1.png",
+			"enemy2":"img/enemy2.png",
+			"enemy3":"img/enemy3.png"
+		},{
+			complete:main
+		})
+		//主函数，加载完成才执行的方法
+		function main(imgObj){
+			//获取设备宽高，并且在移动端需要配合meta才能有效
+			var windowWidth = document.documentElement.clientWidth;
+			var windowHeight = document.documentElement.clientHeight;
+			//将canvas大小设置成全屏
+			canvas.width = windowWidth;
+			canvas.height = windowHeight;
+			//英雄机构造函数
+			function Hero(){
+				this.img = imgObj.hero;
+				this.x = canvas.width/2 - this.img.width/5/2;
+				this.y = canvas.height - this.img.height*2;
+				this.w = this.img.width/5;
+				this.h = this.img.height;
+			}
+			//英雄机绘制方法
+			Hero.prototype.draw = function(){
+				//因为我们的英雄机图片是精灵图，所以需要裁剪才能
+				//使用，所以就需要使用drawImage的九个参数的方法
+				context.drawImage(this.img,0,0,this.img.width/5,this.img.height,this.x,this.y,this.w,this.h);
+			}
+			//子弹构造函数
+			function Bullet(){
+				this.img = imgObj.bullet;
+				this.w = this.img.width;
+				this.h = this.img.height;
+				//让我们的子弹根据我们飞机的位置进行绘制
+				this.x = hero.x+(hero.w-this.w)/2;
+				this.y = hero.y - 2*this.h;
+				this.speedY = 5;
+				this.power = 1;
+			}
+			Bullet.prototype.draw = function(){
+				context.drawImage(this.img,this.x,this.y);
+			}
+			//子弹移动方法
+			Bullet.prototype.move = function(){
+				//子弹自下往上大所以y坐标不停减小
+				this.y -= this.speedY;
+			}
+			//敌机构造函数
+			function Enemy(){
+				//根据随机数来决定下面要绘制哪种敌机
+				var num = rand(1,20);
+				if(num>=1&&num<=10){
+					//绘制小敌机
+					this.img = imgObj.enemy1;
+					//精灵图所以需要控制宽度
+					this.w = this.img.width/5;
+					this.hp = 1;
+					this.speedY = 8;
+				}else if(num>=11&&num<=17){
+					//中等飞机
+					this.img = imgObj.enemy3;
+					this.w = this.img.width/6;
+					this.hp = 3;
+					this.speedY = 5;
+				}else{
+					//大敌机
+					this.img = imgObj.enemy2;
+					this.w = this.img.width/10;
+					this.hp = 8;
+					this.speedY = 1;
+				}
+				//敌机的绘制返回不能超出屏幕
+				this.x = rand(0,canvas.width-this.w);
+				this.h = this.img.height;
+				//从刚刚超出屏幕开始向下绘制
+				this.y = -this.h;
+			}
+			//精灵图使用需要裁剪
+			Enemy.prototype.draw = function(){
+				context.drawImage(this.img,0,0,this.w,this.h,this.x,this.y,this.w,this.h);
+			}
+			//向下移动所以y坐标增加
+			Enemy.prototype.move = function(){
+				this.y += this.speedY;
+			}
+			//英雄机对象
+			var hero = new Hero();
+			//用来存储子弹的数组
+			var bulletArr = [];
+			//用来存储敌机的数组
+			var enemyArr = [];
+			//计数器
+			var times = 0;
+			function ani(){
+				//当背景滑动达到一个canvas大小时
+				//让背景回到原位
+				if(times>=canvas.height){
+					times=0;
+				}
+				context.clearRect(0,0,canvas.width,canvas.height);
+				//背景动画使用两张背景图组合完成
+				context.drawImage(imgObj.bg,0,times,canvas.width,canvas.height);
+				context.drawImage(imgObj.bg,0,times-canvas.height,canvas.width,canvas.height);
+				//让计数器增加来让两张图向下移动
+				times++;
+				hero.draw();
+				//不想子弹绘制太快使用计数器来进行控制
+				if(times%20 == 0){
+					var bullet = new Bullet();
+					//将创建好的新的子弹放到我们的
+					//子弹数组中
+					bulletArr.push(bullet);
+				}
+				//对我们的子弹数组进行循环
+				for (var i=0;i<bulletArr.length;i++) {
+					//判断此时子弹是否超出了我们的视野
+					//如果超出了我们的视野此时需要将子弹
+					//从我们的数组中去除来提高我们的性能
+					if(bulletArr[i].y <= -bulletArr[i].h){
+						bulletArr.splice(i,1);
+						i--;
+						//因为我们此时将这一个子弹从数组中
+						//去除了所以不需要再对子弹进行绘制
+						//和移动所以需要跳出本次循环进行下次
+						//循环
+						continue;
+					}
+					bulletArr[i].move();
+					bulletArr[i].draw();
+				}
+				//控制敌机的创建
+				if(times%50 == 0){
+					var enemy1 = new Enemy();
+					//创建好的敌机放入数组用于下面遍历
+					enemyArr.push(enemy1);
+				}
+				//对敌机进行遍历
+				for (var j=0;j<enemyArr.length;j++) {
+					//判断是否需要将敌机清除出数组
+					if(enemyArr[j].y>=canvas.height){
+						enemyArr.splice(j,1);
+						j--;
+						continue;
+					}
+					//移动和绘制
+					enemyArr[j].move();
+					enemyArr[j].draw();
+				}
+				window.requestAnimationFrame(ani);
+			}
+			ani();
+			//移动端触屏事件
+			canvas.addEventListener("touchmove",function(e){
+				var ev = e || window.event;
+				var x = ev.touches[0].clientX;
+				var y = ev.touches[0].clientY;
+				hero.x = x - hero.w/2;
+				hero.y = y - hero.h/2;
+			},false);
+			
+		}
+		//随机数方法
+		function rand(min,max){
+			return Math.random()*(max-min)+min;
+		}
+		
+		
+		
+	</script>
+</html>

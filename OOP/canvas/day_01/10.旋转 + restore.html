@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>缩放</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 0 3px saddlebrown;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="800" height="800"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+//		context.fillRect(0,0,200,200);
+//		context.rotate(45*deg);
+//		context.fillRect(300,0,200,200);
+//		context.rotate(-45*deg);
+//		context.fillRect(400,400,200,200);
+
+		//restore:先入后出
+		context.fillStyle = "red";
+		context.save();
+		context.fillStyle = "blue";
+		context.save();
+		context.fillStyle = "yellow";
+		context.fillRect(100,100,300,300);
+		context.restore();
+		context.fillRect(400,400,200,200);
+		context.restore();
+		context.fillRect(400,0,200,200);
+	</script>
+</html>

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>addBook</title>
+    <style type="text/css">
+        .box7{
+            width: 100%;
+            height: 100%;
+        }
+        #head{
+            width: 100%;
+            height: 50px;
+            background-color: black;
+            padding-left: 20%;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        #head>a{
+            text-decoration: none;
+            color: darkgrey;
+            font: normal 16px/50px "微软雅黑";
+            margin-right: 20px;
+        }
+        #head>a:hover{
+            color: white;
+        }
+        #center{
+            width: 100%;
+            /*background-color: pink;*/
+            margin-top: 80px;
+            position: relative;
+        }
+        .title{
+            font-size: 50px;
+            padding-left:45%;
+        }
+        .inf{
+            width: 600px;
+            text-align: right;
+            /*background-color: yellow;*/
+            padding-left: 33%;
+            padding-right:40% ;
+        }
+        .inf>form>input{
+            outline: none;
+            width: 500px;
+            height: 30px;
+            border-radius:5px;
+            border: 1px solid darkgray;
+            margin-bottom: 15px;
+        }
+        #img{
+            border: 1px solid transparent;
+        }
+        #ipt1{
+            padding-right: 70%;
+        }
+        #ipt1>input{
+            width: 80px;
+            height: 35px;
+            outline: none;
+            font-size: 18px;
+            border-radius:5px;
+            border: 1px solid transparent;
+        }
+        #bottom{
+            width: 100%;
+            margin-top: 160px;
+            border-top:1px solid gainsboro;
+            text-align: center;
+        }
+        #bottom>p:nth-child(1){
+            color:#3B8FC7;
+            font-size: 14px;
+            padding: 5px;
+        }
+        #bottom>p:nth-child(2){
+            color: gainsboro;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="box7">
+    <div id="head">
+        <a href="">书吧</a>
+        <a href="book.php">网站首页</a>
+        <a href="">关于我们</a>
+        <a href="showBook.php">图书展示</a>
+        <a href="">联系我们</a>
+        <a href="car.php">购物车</a>
+        <a href="addBook.html" style="color: white;">添加图书</a>
+    </div>
+    <div id="center">
+        <p class="title">添加图书</p>
+        <div class="inf">
+            <form action="add.php" method="post" enctype="multipart/form-data">
+                书名：<input type="text" name="name"  placeholder="书名" /><br/>
+                简介：<input type="text" name="intro"  placeholder="简介" /><br/>
+                作者：<input type="text" name="writer" placeholder="作者"/><br/>
+                出版社：<input type="text" name="publish"  placeholder="出版社" /><br/>
+                出版日期：<input type="text" name="time" placeholder="出版日期"/><br/>
+                价格：<input type="text" name="price"  placeholder="价格"/><br/>
+                ISBN：<input type="text" name="isbn"  placeholder="ISBN"/><br/>
+                书籍图片：<input id="img" type="file" name="img"/><br/>
+                <p id="ipt1"><input type="submit" value="添加"></p>
+            </form>
+        </div>
+    </div>
+    <div id="bottom">
+        <p>免费条款 隐私保护 咨询热点 联系我们 公司简介 批发方案 配送方式</p>
+        <p>@2016-2999 SSS版权所有，并保留所有权利</p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+	</body>
+	<script type="text/javascript">
+		function path(obj, type, url) {
+			var arr = [];
+			for(var keys in obj) {
+				var str = keys + "=" + obj[keys];
+//				console.log(str);
+				arr.push(str);
+			}
+			var datas = arr.join("&");
+			if(type == "get") {
+				var urls = url + "?" + datas;
+				return urls;
+			} else if(type == "post") {
+				return datas;
+			}
+		}
+		
+		function ajax(obj) {
+			if(obj.dataType == "jsonp"){
+				var names = "jQuery";
+				var num = String(Math.random());
+//				console.log(num);
+				num = num.substring(2);
+//				console.log(num);
+				names += num;
+				var newDate = new Date();
+				var times = newDate.getTime();
+				names = names+"_"+times;
+				console.log(names);
+				window[names] = obj.success;
+				var os = document.createElement("script");
+				var url = path(obj.data,"get",obj.url) + "&"+obj.jsonp+"="+names;
+				os.src = url;
+				var oh = document.getElementsByTagName("head")[0];
+				oh.appendChild(os);
+				oh.removeChild(os);
+				return;
+			}
+			//第一步 创建ajax请求对象
+			var ajax = {};
+			if(window.XMLHttpRequest) {
+				ajax = new XMLHttpRequest();
+			} else if(window.ActiveXObject) {
+				ajax = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+
+			if(obj.type == "get") {
+				var url = path(obj.data, obj.type, obj.url);
+				ajax.open("get", url);
+				ajax.send();
+			} else if(obj.type == "post") {
+				var datas = path(obj.data, obj.type, obj.url);
+				ajax.open("post", obj.url);
+				ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				ajax.send(datas);
+			}
+
+			//第四步 绑定我们状态改变的方法
+			ajax.onreadystatechange = function() {
+				//第五步 判断请求状态
+				if(ajax.readyState == 4) {
+					//第六步 判断请求结果
+					if(ajax.status == 200) {
+						//第七步 获取返回的结果
+						obj.success(ajax.responseText);
+					} else {
+						obj.error(ajax.responseText);
+					}
+				}
+			}
+		}
+		
+		ajax({
+			url:"http://localhost/OOP/php/day_08/8.jsonp_jsJsonp.php",
+			dataType:"jsonp",
+			data:{
+				user:"leilei"
+			},
+			jsonp:"ccc",
+			success:function(data){
+				console.log("成功");
+				console.log(data);
+			}
+		})
+	</script>
+
+</html>

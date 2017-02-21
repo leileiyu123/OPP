@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 5px rosybrown;
+				background: palegoldenrod;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+		function rotates(times){
+			context.fillRect(200,200,200,200);
+			context.translate(300,300);
+			context.rotate(times*deg);
+			context.translate(-300,-300);
+			context.fillStyle = "#FF0000";
+			context.fillRect(200,200,200,200);
+		}
+		var times = 0;
+		function ani(){
+			context.clearRect(0,0,canvas.width,canvas.height);
+			times++;
+			rotates(times);
+			window.requestAnimationFrame(ani);
+		}
+		
+		ani();
+	</script>
+</html>

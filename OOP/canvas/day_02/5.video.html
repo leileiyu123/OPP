@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>video</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 3px red;
+			}
+		</style>
+	</head>
+	<body>
+		<video id="vid" width="600" height="600">
+			<source src="HTML5的前世今生(1).mp4" type="video/mp4"></source>
+		</video>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var videos= document.getElementById("vid");
+		
+		//动画
+		function ani(){
+			//将视频的每一帧 绘制在canvas上
+			context.drawImage(videos,0,0,600,600);
+			var imgData = context.getImageData(0,0,600,600);
+			var arr = imgData.data;
+			for(var i=0;i<arr.length;i+=4){
+				if(i<arr.length/4){
+					arr[i] =255;
+				}else if(i<arr.length/2 && i>arr.length/4){
+					arr[i+1] =255;
+				}
+				
+			}
+			context.putImageData(imgData,0,0);
+			
+			window.requestAnimationFrame(ani);
+		}
+		//当视频可以播放时，进行播放调用
+		videos.oncanplay = function(){
+			videos.play();
+			ani();
+		}
+	</script>
+</html>

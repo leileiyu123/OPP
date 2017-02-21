@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>缩放</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 0 3px saddlebrown;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+		context.fillRect(0,0,100,100);
+		context.scale(2,2);
+		context.fillRect(50,50,100,100);
+	</script>
+</html>

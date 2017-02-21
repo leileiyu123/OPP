@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>绘制文字</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 0 3px saddlebrown;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		
+		
+		context.font = "50px serif";
+		
+		//createLinearGradient(x1,y1,x2,y2):参数分别表示渐变起始位置和结束位置的横纵坐标
+		var gradient = context.createLinearGradient(100,0,400,0);
+		gradient.addColorStop("0","blue");
+		gradient.addColorStop("0.5","red");
+		gradient.addColorStop("1","yellow");
+		
+		context.fillStyle = gradient;
+		
+		context.fillText("helloword",300,100);
+		
+		context.fillRect(100,150,400,400);
+		
+		
+	</script>
+</html>

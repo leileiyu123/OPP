@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>原型</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		//原型本身就是一个对象
+		//可以通过原型对我们的 "类" 添加新的属性和方法
+		function Dog(){}
+		//原型通过构造函数名.prototype获得
+		//想要设置我们的原型有两种方法
+		//1.替换形式
+		//2.追加形式
+		//如下是替换形式，替换形式相当于给我们的原型重新赋予了一个对象，所以之前所设置的内容就都等于作废了
+		Dog.prototype = {
+			name:"大黄",
+			sex:"雌性",
+			say:function(){
+				console.log("汪汪汪");
+			}
+		}
+		
+		Dog.prototype.age = 12;
+		
+		//追加操作
+		//如果在对原型的操作中既需要使用追加操作形式又需要使用覆盖操作形式
+		//一定要将追加形式的写在覆盖形式之后，否则就会造成之前写的追加内容被替换掉，无法进行使用
+		Dog.prototype.talk = function(){
+			console.log("hahaha");
+		}
+		
+		//使用new运算符来调用实行（实例化对象）
+		var dog = new Dog();
+		dog.say();
+		dog.talk();
+		console.log(dog);
+		console.log(dog.name);
+		console.log(dog.sex);
+		console.log(dog.age);
+		
+		
+		//构造函数与原型结合使用
+		//一般情况来说，构造函数用来设置我们的属性
+		//在原型中进行我们方法的编写
+		function Student(name,age){
+			this.name = name;
+			this.age = age;
+		}
+		Student.prototype.eat = function(){
+			console.log("吃饭");
+		}
+		//在原型中我们照样可以通过this.的形式来获取我们想要的属性和方法
+		Student.prototype.info= function(){
+			console.log("我的名字是："+ this.name + "我今年：" + this.age + "岁了" );
+		}
+		var student = new Student("leilei",18);
+		console.log(student);
+		student.eat();
+		student.info();
+		
+	</script>
+</html>

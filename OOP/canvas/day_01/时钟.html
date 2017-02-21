@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>时钟</title>
+		<style type="text/css">
+			#myCanvas {
+				box-shadow: 0 0 5px rosybrown;
+				background: palegoldenrod;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI / 180;
+
+		function clock() {
+			var nowDate = new Date();
+			var nowHour = nowDate.getHours();
+			var nowMinute = nowDate.getMinutes();
+			var nowSecond = nowDate.getSeconds();
+
+			second = nowSecond;
+			console.log(second)
+			minute = nowSecond / 60 + nowMinute;
+			console.log(minute)
+			hour = minute / 60 + nowHour;
+			hour > 12 ? (hour - 12) : hour;
+			console.log(hour);
+			
+			context.clearRect(0,0,canvas.width,canvas.height);
+			
+			context.beginPath();
+			context.arc(300, 300, 160, 0, 360 * deg, true);
+			context.fillStyle = "grey";
+			context.fill();
+
+			context.beginPath();
+			context.arc(300, 300, 150, 0, 360 * deg, true);
+			context.fillStyle = "lightgrey";
+			context.fill();
+
+			//表盘数字
+			context.save(); //保存当前状态
+			context.beginPath();
+			context.translate(300, 300);//设置原点
+			for(var i = 1; i < 13; i++) {
+				var x = Math.sin(i * 30 * deg);
+				var y = -Math.cos(i * 30 * deg);
+				context.font = "bold 30px Georgia"; //字体样式
+				context.fillStyle = "black";
+				context.textAlign = "center";
+				context.fillText(i, x * 135, y * 135); //绘制数字
+			}
+			context.closePath();
+			context.restore();//把原来状态恢复回来
+
+			//时针
+			context.save();
+			context.translate(300, 300);//设置原点
+			context.rotate((hour*30-90)*deg);
+			context.fillStyle = "black";
+			context.fillRect(0, -4, 70, 8);
+			context.restore();
+
+			//分针
+			context.save();
+			context.translate(300, 300);//设置原点
+			context.rotate((minute*6-90)*deg);
+			context.fillStyle = "red";
+			context.fillRect(0, -3, 90, 6);
+			context.restore();
+
+			//秒针
+			context.save();
+			context.translate(300, 300);//设置原点
+			context.rotate((second*6-90)*deg);
+			context.fillStyle = "brown";
+			context.fillRect(0, -2, 110, 4);
+			context.restore();
+		}
+		clock();
+		
+		setInterval(clock,1000);
+
+	</script>
+
+</html>

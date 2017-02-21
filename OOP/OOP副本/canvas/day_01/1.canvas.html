@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#canvas1{
+				box-shadow: 0 0 5px red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas1" width="" height="">
+			你的浏览器不支持canvas，请使用高版本浏览器
+		</canvas>
+	</body>
+	<script type="text/javascript">
+		//获取canvas
+		var canvas = document.getElementById("canvas1");
+		//要用js来设置我们canvas的宽高属性
+		//设置我们的canvas的width,height属性，而不是canvas.style.width/height
+		canvas.width = 500;
+		canvas.height = 500;
+		//获取我们的上下文，通俗来讲就是我们的画纸
+		var context = canvas1.getContext("2d");
+		
+		
+		context.beginPath();//开始一条路径
+		context.moveTo(100,100);//设置绘制起点
+		context.lineTo(200,200);//设置下一个点
+		//先设置再绘制
+		context.strokeStyle = "red";//设置线条的样式(颜色)
+		context.lineWidth = 10;//设置线宽
+		context.stroke();//绘制线条
+		
+		
+		context.beginPath();//另画一条线，一定要加beginPath()
+		context.moveTo(300,300);
+		context.lineTo(300,500);
+		context.strokeStyle = "aqua";
+		context.lineWidth = 5;
+		context.stroke();
+		
+	</script>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			html {
+				height: 100%;
+				font-family: sans-serif;
+			}
+			
+			body {
+				display: -webkit-flex;
+				display: flex;
+				-webkit-flex-direction: column;
+				flex-direction: column;
+				height: calc(100% - 100px);
+				background-color: #EFEFEF;
+			}
+			
+			*,
+			:after,
+			:before {
+				box-sizing: border-box;
+			}
+			
+			#main {
+				display: -webkit-flex;
+				display: flex;
+				-webkit-align-items: center;
+				align-items: center;
+				-webkit-justify-content: center;
+				justify-content: center;
+				height: 100%;
+			}
+			
+			#main section {
+				min-width: 250px;
+				max-width: 50%;
+				height: 100%;
+				text-align: center;
+			}
+			
+			#main img {
+				border: 2px solid #fff;
+			}
+			
+			#main form {
+				padding: 25px 0 50px 0;
+				text-align: left;
+			}
+			
+			#main form label {
+				display: block;
+				margin-top: 10px;
+				font-weight: bold;
+			}
+			
+			#main form input,
+			#main form select {
+				width: 100%;
+			}
+			
+			#main form input:invalid {
+				outline: 2px solid #f00;
+				color: #f00;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="main">
+			<div id="wrap">
+				<canvas id="qrious"></canvas>
+				<form>
+					<label>
+					value
+					<input type="text" name="values" id="values" value="" placeholder="http://www.baidu.com/"/>
+				</label>
+					<label>
+					size
+					<input type="number" name="sizes" id="sizes" value="250" placeholder="100" min="100" max="1000" />
+				</label>
+					<!--误差矫正级别-->
+					<label>
+					level
+					<select name="levels" id="levels">
+						<option value="L">L - 7% damage</option>
+						<option value="M">M - 15% damage</option>
+						<option value="Q">Q - 25% damage</option>
+						<option value="H">H - 30% damage</option>
+					</select>
+				</label>
+					<!--背景色-->
+					<label>
+					background
+					<input type="color" name="backgounds" id="backgounds" value="#ffffff" />
+				</label>
+					<!--前景色-->
+					<label>
+					foreground
+					<input type="color" name="foregrounds" id="foregrounds" value="#000000" />
+				</label>
+				</form>
+			</div>
+			
+		</div>
+		<a id="down">下载</a>
+	</body>
+	<script src="../../php/js/qrious.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+//		初始化插件
+		(function() {
+			var backgrounds= document.getElementById("backgounds");
+			var foregrounds = document.getElementById("foregrounds");
+			var levels = document.getElementById("levels");
+			var wrap = document.getElementById("wrap");
+			var sizes=document.getElementById("sizes");
+			var values=document.getElementById("values");
+			var down = document.getElementById("down");
+			//通过 QRious()方法来实例化一个对象
+			var qr=new QRious({
+				//element 参数用来设置生成二维码的 DOM 元素。DOM 元素必须是 canvas 元素或img 元素
+				element:document.getElementById("qrious"),
+				size:250,
+				value:'http://www.baidu.com/'
+			});
+			backgrounds.addEventListener('change',function(){
+				qr.background=backgrounds.value||null;
+			});
+			foregrounds.addEventListener('change',function(){
+				qr.foreground=foregrounds.value||null;
+			});
+			levels.addEventListener('change',function(){
+				qr.level=levels.value;
+			});
+			sizes.addEventListener('change',function(){
+				if(!sizes.validity.valid){
+					return
+				}
+				qr.size=sizes.value||null;
+				wrap.style.minWidth=qr.size+'px';
+			});
+			values.addEventListener('input',function(){
+				qr.value=values.value;
+			})
+			down.onclick = function(){
+				var url = qr.toDataURL()
+				down.href= url;
+				down.download = "1.erweima.jpg";
+			}
+
+		})()
+	</script>
+
+</html>

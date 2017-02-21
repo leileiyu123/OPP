@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#canvas1{
+				border: 2px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas1" width="600" height="600"></canvas>
+		<button id="btn">666</button>
+	</body>
+	<script src="jCanvaScript.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		jc.start("canvas1",true);//开始
+		jc.rect(100,100,50,50,"#ff0000",1).draggable().name('c1');
+		jc.circle(100,300,50,"#ff00ff",1).draggable().id("c2");
+		btn.onclick=function(){
+			jc(".c1").color("#ffff00").animate({x:200,y:200},2000);
+			jc("#c2").color("#ffff00").animate({x:200,y:200,radius:5},2000);
+		}
+		jc.start();//结束
+		
+		
+
+	</script>
+</html>

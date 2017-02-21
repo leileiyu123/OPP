@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+			}
+			
+			#myCanvas {
+				border: 2px solid #8B4513;
+				margin: 30px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="myCanvas" width="700" height="700"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+
+		function Rect(x, y, w, h, color) {
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.color = color;
+		}
+
+		Rect.prototype.draw = function() {
+			context.beginPath();
+			context.rect(this.x, this.y, this.w, this.h);
+			context.fillStyle = this.color;
+			context.fill();
+			if(arguments.length == 2) {
+				if(context.isPointInPath(arguments[0], arguments[1])) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		var rect1 = new Rect(100, 100, 80, 80, "red");
+		var rect2 = new Rect(300, 300, 80, 80, "blue");
+		var arr = [rect1, rect2];
+		
+		for(var i=0;i<arr.length;i++){
+			arr[i].draw();
+		}
+
+		canvas.onmousedown = function(e) {
+			var ev = e || window.event;
+			var x = ev.clientX - canvas.offsetLeft;
+			var y = ev.clientY - canvas.offsetTop;
+
+			for(var i = 0; i < arr.length; i++) {
+				if(arr[i].draw(x, y)) {
+					//用来获取我们鼠标点击时到底点在我们矩形的什么位置
+					var disX = x - arr[i].x;
+					var disY = y - arr[i].y;
+					(function(i,disX,disY){
+						document.onmousemove = function(e) {
+							var ev = e || window.event;
+							var x = ev.clientX - canvas.offsetLeft - disX;
+							var y = ev.clientY - canvas.offsetTop - disY;
+							arr[i].x = x;
+							arr[i].y = y;
+							context.clearRect(0,0,canvas.width,canvas.height);
+							for(var j=0;j<arr.length;j++){
+								arr[j].draw();
+							}
+							console.log("碰上没"+peng(arr[0],arr[1]));
+						}
+					})(i,disX,disY)
+					
+					document.onmouseup = function() {
+						document.onmousemove = "";
+					}
+				}
+			}
+		}
+		
+		function peng(r1,b1){
+			var rll = r1.x+r1.w;
+			var r1h = r1.y+r1.h;
+			var b1l = b1.x+b1.w;
+			var b1h = b1.y+b1.h;
+			
+//			r1.x<b1.x+b1.w;
+//			b1.x<r1.x+r1.w;
+//			r1.y<b1.y+b1.h;
+//			b1.y<r1.y+r1.h;
+			if(r1.x<b1l&&b1.x<rll&&r1.y<b1h&&b1.y<r1h){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	</script>
+
+</html>

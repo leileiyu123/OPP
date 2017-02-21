@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>画板</title>
+		<style type="text/css">
+			/** {
+				margin: 0;
+				padding: 0;
+			}*/
+			#myCanvas {
+				box-shadow: 0 0 5px brown;
+				margin-left: 50px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<canvas id="myCanvas" width="800" height="600"></canvas>
+		<button id="pen">画笔</button>
+		<button id="cazi">橡皮擦</button>
+		<a id="down" href="">图片下载</a>
+		<a id="load">图片预览</a>
+		
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var pen = document.getElementById("pen");
+		var cazi = document.getElementById("cazi");
+		var down = document.getElementById("down");
+		var load = document.getElementById("load");
+		
+//		context.beginPath();
+//		context.moveTo(100,100);
+//		context.lineTo(200,200);
+//		context.lineTo(400,200);
+//		context.lineWidth = 10;
+//		//设置圆角的属性
+//		context.lineCap = "round";
+//		context.stroke();
+		
+		context.lineCap = "round";
+		context.lineWidth = 10;
+//		context.beginPath();
+//		context.moveTo(100,100);
+//		context.lineTo(200,200);
+//		context.stroke();
+//		context.beginPath();
+//		context.moveTo(200,200);
+//		context.lineTo(400,200);
+//		context.stroke();
+		
+		pen.onclick = function(){
+			canvas.onmousedown = function(e){
+				var ev = e || window.event;
+				var x = ev.clientX - canvas.offsetLeft;
+				var y = ev.clientY - canvas.offsetTop;
+				context.beginPath();
+				context.moveTo(x,y);
+				document.onmousemove = function(e){
+					var ev = e||window.event;
+					var x = ev.clientX - canvas.offsetLeft;
+					var y = ev.clientY - canvas.offsetTop;
+					context.lineTo(x,y);
+					context.stroke();
+				}
+				document.onmouseup = function(){
+					document.onmousemove = "";
+				}
+			}
+		}
+		cazi.onclick = function(){
+			canvas.onmousedown = function(){
+				document.onmousemove = function(e){
+					var ev = e || window.event;
+					var x = ev.clientX - canvas.offsetLeft-15;
+					var y = ev.clientY - canvas.offsetTop-15;
+					context.clearRect(x,y,30,30);
+				}
+				document.onmouseup = function(){
+					document.onmousemove = "";
+				}
+			}
+		}
+		load.onclick = function(){
+			var url = canvas.toDataURL();
+			window.location.href = url;//如果用window来处理，a标签里的href得干掉
+		}
+		down.onclick = function(){
+			var url = canvas.toDataURL();
+			down.href = url;
+			down.onload = url;
+		}
+		
+	</script>
+
+</html>

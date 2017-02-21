@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Three框架</title>
+        <script src="three.min.js"></script>
+        <style type="text/css">
+            div#canvas3d {
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                height: 800px;
+                background-color: #EEEEEE;
+            }
+        </style>
+    </head>
+    <body>
+    		<div id="canvas3d">
+    			
+    		</div>
+    </body>
+    <script type="text/javascript">
+    		var webgl = document.getElementById('canvas3d');
+		var width,height;
+		 
+		 var scene;
+		//设置场景，所有的元素只有在添加到场景当中之后才能够生效
+		function initScene() {
+			scene = new THREE.Scene();
+		}
+		 
+		var camera;
+		//设置相机
+		function initCamera() {
+			//此处为设置透视投影的相机，默认情况下，相机的上方向为Y轴，右方向为X轴，沿着Z轴垂直朝里（视野角：fov； 纵横比：aspect； 相机离视最近的距离：near； 相机离视体积最远距离：far）
+			camera = new THREE.PerspectiveCamera(45,width/height,1,1000);
+			 //设置相机的位置坐标
+			camera.position.x = 500;
+			camera.position.y = -200;
+			camera.position.z = 800;
+			//设置相机的上为y轴方向
+			camera.up.x = 0;
+			camera.up.y = 1;
+			camera.up.z = 0;
+			
+			camera.lookAt({x:0,y:0,z:0})
+		}
+		 
+    		//定义一个全局变量renderer（含义:渲染）
+		var renderer;
+		//构建基本画布 渲染器
+		function initThree(){
+			 //生成渲染器对象（antialias属性属性：抗锯齿效果为设置有效）
+			 renderer = new THREE.WebGLRenderer();
+			 //获取画布的宽高
+			 width = webgl.clientWidth;
+			 height = webgl.clientHeight;
+			 //指定渲染器的高宽（和画布框大小一致）
+			 renderer.setSize(width,height);
+			 //将创建的canvas元素（此处的canvas元素为three.js创建）添加到html文档当中
+			 webgl.appendChild(renderer.domElement);
+			 //设置渲染器的清除色
+			renderer.setClearColorHex(0xFFFFFF,1.0);
+		}
+		
+		var light1;
+		//设置光源
+		function initLight() {
+			//设置平行光DirectionalLight
+			light1 = new THREE.DirectionalLight(0x00FF00,1.0);
+			//光源向量，即光源的位置
+			light1.position.set(0,0,50);
+			//追加光源到场景
+			scene.add(light1);
+			
+			//设置平行光DirectionalLight
+			light2 = new THREE.DirectionalLight(0x0000ff,1.0);
+			//光源向量，即光源的位置
+			light2.position.set(50,0,0);
+			//追加光源到场景
+			scene.add(light2);
+		}
+
+		var cube = Array();
+		//设置物体
+		function initObject() {
+			for (var i=0;i<4;i++) {
+				//mesh是three.js的一个类
+				cube[i] = new THREE.Mesh(
+					//CubeGeometry 形状 （宽 高 深度）
+					new THREE.CubeGeometry(50,50,50),
+					//MeshLambertMaterial 材质
+					new THREE.MeshLambertMaterial({color:0xFFFFFF})
+				);
+				//添加长方体到场景
+				scene.add(cube[i]);
+				//设置长方体位置
+				cube[i].position.set(0,120-80*i,0);
+			}
+		}
+		 
+		var t = 0;
+		//旋转
+		function loop() {
+			t++;
+			renderer.clear();
+			cube[1].rotation.set(t/100,0,0);
+			cube[2].rotation.set(0,t/100,0);
+			cube[3].rotation.set(0,0,t/100);
+			//渲染
+			renderer.render(scene,camera);
+			//循环调用
+			window.requestAnimationFrame(loop);
+		}
+		
+		//执行
+		threeStart();
+		function threeStart() {
+			initThree();
+			initCamera();
+			initScene();
+			initLight();
+			initObject();
+			loop();
+			renderer.clear();
+			renderer.render(scene, camera);
+		}
+    </script>
+</html>

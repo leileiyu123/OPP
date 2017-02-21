@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>继承</title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		//概念：子类具有父类所有的特征和行为
+		
+		//因为在开发中我们的类之间可能经常会有一些共同的属性和方法
+		//如果每个类中都编写一次非常浪费，所以此时我们可以通过
+		//提取出公共类通过继承公共类来实现代码的简化，效率的提升
+		function Person(name,age){
+			this.name = name;
+			this.age = age;
+			this.say = function(){
+				console.log("hello!");
+			}
+		}
+		Person.prototype.ppp = function(){
+			console.log("我是原型");
+		}
+		
+		//构造函数的继承有两种
+		//call 和 apply方法:只用于构造函数继承，不能实现原型的继承
+		function Student(name,age,className){
+			//1.call:需要几个参数就需要都进行传递
+			Person.call(this,name,age);//call方法:改变this指向
+			this.className = className;
+		}
+		
+		function Teacher(name,age,sex){
+			//2.apply:只需要在第二个参数传递一个参数列表就
+			//可以了，不一定非得是arguments，是个数组就OK
+			Person.apply(this,arguments);//apply方法
+			this.sex = sex;
+		}
+		
+		//想要实现原型继承发现这样直接赋值虽然子类上面
+		//有了父类的属性和方法，但是对父类的方法进行重写
+		//的时候发现，父类的原型上的方法也被修改了
+		//原因就是复杂数据类型之间的赋值是传址的过程
+		Student.prototype = Person.prototype;
+		//重写ppp方法
+		Student.prototype.ppp = function(){
+			console.log("我是student");
+		}
+		
+		var person = new Person("wenwen",88);
+		person.ppp();
+		console.log("分界线");
+		
+		var stu = new Student("余蕾",18,"2013110748");
+		//访问属性
+		console.log(stu);
+		//调用方法
+		stu.say();
+		stu.ppp();
+
+		var teacher = new Teacher("huihui",22,"men");
+		console.log(teacher);
+	
+		
+	</script>
+</html>

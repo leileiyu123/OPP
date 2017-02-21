@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="keywords" content="时间轴，jquery" />
+		<title>timeago.js自动将时间戳转换为更易读的时间轴</title>
+		<style type="text/css">
+			.demo {
+				margin: 50px auto 0 auto;
+				width: 730px;
+				border: 1px solid black;
+			}
+			
+			.list li {
+				line-height: 24px;
+				font-size: 14px;
+				/*font-size: 20px;*/
+			}
+			
+			.timeago {
+				margin-left: 10px;
+				color: black;
+				font: bold;
+				font-size: 14px;
+			}
+			.desc {
+				color: #666;
+				line-height: 42px;
+				font-weight: bold
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main">
+			<h2 class="top_title"> timeago.js自动将时间戳转换为更易读的时间轴 </h2>
+			<div class="demo">
+				<p class="desc">请留意时间变化，每分钟更新一次。</p>
+				<ul class="list">
+					<li>您打开此页面的时间：<time class="loaded timeago"></time></li>
+					<li>小明 说：时间过去不在回来。<time class="timeago" datetime="2017/1/11 0:00:00"></time></li>
+					<li>小红 说：今天玩的真开心。<time class="timeago" datetime="2017-1-11T00:00:00Z"></time></li>
+					<li>小红 说：今天玩的真开心。<time class="timeago" datetime="2017-1-11T00:00:00Z+08:00"></time></li>
+					<li>小兰 说：今天天气真好<time class="timeago" datetime="2016-11-28T11:17:00Z"></time></li>
+					<li>我 说：今天不想学习（2012-09-25）。<time class="timeago" datetime="2012-09-25T01:17:00Z"></time></li>
+				</ul>
+			</div>
+		</div>
+	</body>
+		<script src="js/JQuery-3.1.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery.timeago.js"></script>
+		<script type="text/javascript">
+			function zero(num){
+				return((num < 10) ? '0' : '') + num;
+			}
+			function iso8601(date){
+				return date.getUTCFullYear() +
+					"-" + zero(date.getUTCMonth() + 1) +
+					"-" + zero(date.getUTCDate()) +
+					"T" + zero(date.getUTCHours()) +
+					":" + zero(date.getUTCMinutes()) +
+					":" + zero(date.getUTCSeconds()) + "Z";
+			};                        
+			function currentDates(){
+				console.log(iso8601(new Date()));
+				$('time.loaded').attr("datetime", iso8601(new Date()));
+			}
+			
+			$(function(){
+				currentDates();
+				$(".timeago").timeago();
+			});
+			
+		</script>
+</html>

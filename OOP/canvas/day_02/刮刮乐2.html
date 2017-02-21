@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>刮刮乐2</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			#myCanvas {
+				box-shadow: 0 0 3px red;
+				position: absolute;
+			}
+			
+			img {
+				width: 600px;
+				height: 600px;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<img src="../img/1.jpeg" />
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+
+		context.fillStyle = "darkgray";
+		context.fillRect(0, 0, 600, 600);
+
+		context.globalCompositeOperation = "destination-out";
+	
+		canvas.onmousedown = function() {
+			document.onmousemove = function(e) {
+				alph();
+				
+				var ev = e || window.event;
+				var x = ev.clientX;
+				var y = ev.clientY;
+
+				context.beginPath();
+				context.arc(x, y, 50, 0, Math.PI * 2);
+				context.fill();
+			}
+			document.onmouseup = function() {
+				document.onmousemove = "";
+			}
+		}
+		function alph(){
+			var imgData = context.getImageData(0,0,canvas.width,canvas.height);
+			var arr = imgData.data;
+			
+			var count = 0;
+			for(var i = 0; i < arr.length; i += 4) {
+				//透明度的取值范围跟rgb一样也是0~255
+				//但是如果需要半透明那种效果还是需要将a的值设置在0~1之间
+				//arr[i+3] = 0~255 0~1
+				if(arr[i + 3] == 0) {
+					count++;
+					//count表示我们一个有多少个像素点透明
+					//arr.length/4代表一个有多少个像素点
+					if(count>=arr.length/4/2){
+						canvas.style.opacity = 0;
+//						context.clearRect(0,0,600,600);
+					}
+				}
+			}
+		}
+		
+	</script>
+
+</html>

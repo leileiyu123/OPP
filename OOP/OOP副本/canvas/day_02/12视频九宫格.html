@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>video</title>
+		<style type="text/css">
+			#myCanvas {
+				box-shadow: 0 0 3px red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<video id="vid" width="600" height="600">
+			<source src="HTML5的前世今生(1).mp4" type="video/mp4"></source>
+		</video>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var videos = document.getElementById("vid");
+
+		//动画
+		function ani() {
+			//将视频的每一帧 绘制在videos上
+			context.drawImage(videos, 0, 0, 600, 600);
+			var arr = [];
+			for(var j = 0; j < 3; j++) {
+				for(var k = 0; k < 3; k++) {
+					var imgData = context.getImageData(k * 200, j * 200, 200, 600);
+					arr.push(imgData);
+					console.log(arr)
+					for(var i = 0; i < arr.length; i++) {
+						arr1 = arr[i].data;
+						for(var m = 0; m < arr1.length; m += 4) {
+							if(i % 3 == 0) {
+								arr1[m] = 255;
+							} else if(i % 3 == 1) {
+								arr1[m + 1] = 23;
+							}else{
+								arr1[m + 2] = 100;
+							}
+						}
+						context.putImageData(imgData, k * 200, j * 200);
+						window.requestAnimationFrame(ani);
+					}
+				}
+
+				var imgData = context.getImageData(0, 0, 600, 600);
+				var Arr = imgData.data;
+				for(var i = 0; i < Arr.length; i += 4) {
+					if(i < Arr.length / 3) {
+						Arr[i] = 255;
+					} else if(i < Arr.length * 2 / 3 && (i > Arr.length / 3)) {
+						Arr[i + 1] = 255;
+					} else {
+						Arr[i + 2] = 255;
+					}
+				}
+				context.putImageData(imgData, 0, 0);
+				window.requestAnimationFrame(ani);
+			}
+		}
+		//当视频可以播放时，进行播放调用
+		videos.oncanplay = function() {
+			videos.play();
+			ani();
+		}
+	</script>
+
+</html>

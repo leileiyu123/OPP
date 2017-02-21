@@ -1,0 +1,15 @@
+div{
+    color: red;
+}
+div ul{
+    list-style-type: none;
+}
+$color:red;
+$fontsize:10;
+div{
+    color: $color;
+    font-size: $fontsize*10+px;
+    ul{
+        list-style-type: none;
+    }
+}

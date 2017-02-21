@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#content{
+				width: 100px;
+				height: 100px;
+				background-color: pink;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="content">
+			<ul id="uls">
+				
+			</ul>
+		</div>
+	</body>
+	<script src="../js/JQuery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+		var divs = document.getElementById("content");
+//		var uls = document.getElementById("uls");
+		divs.onclick = function(){
+			$.ajax({
+			type:"get",
+			url:"2.ajax_server.php",
+			data:{
+				name:"leilei",
+				id:2
+			},
+//			dataType:"json",//要求data必须是json字符串
+			success:function(data){
+//				console.log(data);
+//				console.log(typeof data);
+//				console.log(typeof JSON.parse(data));
+				//JSON.parse()用于从一个字符串中解析出JSON对象
+				var arr = JSON.parse(data);
+				console.log("成功");
+				console.log(arr);
+				for(var i=0;i<arr.length;i++){
+					//Jq方法
+					var li = $("<li>"+arr[i].name+"</li>");
+					$(uls).append(li);
+					
+					//Js方法
+//					var li = document.createElement("li");
+//					uls.appendChild(li);
+//					li.innerHTML = arr[i].name;
+				}
+				
+//				divs.innerHTML = obj.name + obj.password;
+			},
+			error:function(errors){
+				console.log("失败");
+				console.log(errors);
+			}
+		});
+	}
+		
+	</script>
+</html>

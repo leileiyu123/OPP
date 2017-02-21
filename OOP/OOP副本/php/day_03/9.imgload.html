@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<!--post请求进行文件上传，要设置enctype属性为from-data-->
+		<form action="./9.fileload.php" method="post" enctype="multipart/form-data">
+			<!--name属性确定后台从$_FILES里面怎么获取我们的文件-->
+			<input type="file" name="iii" id="img" value=""/>
+			<input type="submit" value="提交"/>
+		</form>
+	</body>
+</html>

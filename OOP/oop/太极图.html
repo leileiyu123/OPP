@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#div{
+				width:0;
+				height:400px;
+				background: black;
+				border-left: 200px solid black;
+				border-right:200px solid white;
+				border-radius: 50%;
+				position: relative;
+				box-shadow: 0 0 20px black;
+				animation: rotate 2s linear infinite;
+			}
+			#div:before{
+				position: absolute;
+				content:"";
+				top:0;
+				left: -100px;
+				width: 200px;
+				height: 200px;
+				background: white;
+				border-radius: 50%;
+				box-shadow: 0 200px 0 black;
+				
+			}
+			#div:after{
+				position: absolute;
+				content:"";
+				width: 50px;
+				height:50px;
+				border-radius: 50%;
+				background: black;
+				box-shadow: 0 200px 0 white;
+				top:50px;left:-25px;
+			}
+			@keyframes rotate{
+				from{transform: rotate(0deg);}
+				to{transform: rotate(360deg);}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="div"></div>
+	</body>
+	
+</html>

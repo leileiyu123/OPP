@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>运动的矩形</title>
+		<style type="text/css">
+			#myCanvas{
+				border: 2px solid #8B4513;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="300" height="300"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+		function Rect(x,y,w,h,color,spX,spY){
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.color = color;
+			this.spX = 2;
+			this.spY = 3;
+		}
+		Rect.prototype.draw = function(){
+			context.fillStyle = this.color;
+			context.fillRect(this.x,this.y,this.w,this.h);
+		}
+		Rect.prototype.move = function(){
+			if(this.x + this.w>=canvas.width || this.x<=0){
+				this.spX *= -1;
+			}
+			if(this.y + this.h>=canvas.width || this.y<=0){
+				this.spY *= -1;
+			}
+			this.x += this.spX;
+			this.y += this.spY;
+			
+			peng(rect1,rect2);
+		}
+		var rect1 = new Rect(100,100,50,50,"red");
+		var rect2 = new Rect(200,200,50,50,"blue");
+		var arr = [rect1,rect2];
+
+		
+		function peng(obj1,obj2){
+			var t1 = obj1.y;
+			var b1 = obj1.y + obj1.h;
+			var l1 = obj1.x;
+			var r1 = obj1.x + obj1.w;
+			
+			var t2 = obj2.y;
+			var b2 = obj2.y+obj2.h;
+			var l2 = obj2.x;
+			var r2 = obj2.x + obj2.w;
+			
+			if(t1<b2 && b1>t2 && l1<r2 && r1> l2){
+				obj1.spX *= -1;
+				obj1.spY *= -1;
+				obj2.spX *= -1;
+				obj2.spY *= -1;
+			}
+		}
+		
+		function ani(){
+			context.clearRect(0,0,canvas.width,canvas.height);
+			for(var i=0;i<arr.length;i++){
+				arr[i].draw();
+				arr[i].move();
+			}
+			
+			window.requestAnimationFrame(ani);
+		}
+		ani();
+		
+		
+	</script>
+</html>

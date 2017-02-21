@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/angular.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body ng-app="c" ng-controller="myc">
+		<div ng-init="arr = ['2','3']" >
+			{{strs}}
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = angular.module("c", []);
+		app.controller("myc", function($scope, $http) {
+		 
+			  str = Number($scope.arr[0])+Number($scope.arr[1])
+			 $scope.strs= "<div ng-repeat='x in arr'>{{"+str+"}}</div>"
+		})
+	</script>
+
+</html>

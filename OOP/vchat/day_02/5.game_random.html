@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+		<title></title>
+		<style type="text/css">
+			*,body{
+				margin: 0;
+				padding: 0;
+			}
+			#box{
+				text-align: center;
+			}
+			#content{
+				width: 80px;
+				height: 50px;
+				border: 1px solid red;
+				border-radius: 5px;
+				text-align: center;
+				font: normal 30px/50px "微软雅黑";
+				margin: 0 auto;
+                margin-top:150px;
+                margin-bottom:30px;
+			}
+			#showrank{
+				margin-top: 30px;
+				padding: 10px;
+			}
+			#rank{
+				padding: 5px;
+			}
+			#rank img{
+				width: 30px;
+				height: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="content"></div>
+			<button onclick="sub()">点击</button>
+			<div id="showrank">
+				<!--<div id="rank">
+					<img src="img" />
+					<span>nickname</span>
+					<span>score</span>
+				</div>-->
+			</div>
+		</div>
+	</body>
+	<script src="../../php/js/JQuery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var content = document.getElementById("content");
+		var num = 0;
+		function random(min,max){
+			return parseInt(Math.random()*(max-min+1))+min;
+		}
+		function sub(){
+			
+			content.innerHTML = random(1,100);
+			num = content.innerHTML;
+			return num;
+			
+		}
+		
+		$.ajax({
+			type:"get",
+			url:"6.game_random.php",
+			dataType:"json",
+			data:{
+				score:sub()
+			},
+			success:function(data){
+				console.log("成功");
+				console.log(data);
+				for(var keys in data){
+					var divObj =$('<div id="rank"><img src="'+
+					data[keys].headimgurl +
+					'"/><span>'+
+					data[keys].nickname +
+					'</span><span>'+
+					data[keys].score+
+					'</span></div>');
+					$("#showrank").append(divObj);
+				}
+				
+			},
+			error:function(errors){
+				console.log("失败");
+				console.log(errors);
+			}
+		});
+		
+	</script>
+</html>

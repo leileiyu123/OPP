@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>三次贝塞尔曲线</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 0 3px saddlebrown;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="800" height="800"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		
+		context.beginPath();
+		context.moveTo(300,100);
+		context.bezierCurveTo(400,200,200,300,300,400);
+		context.stroke();
+		context.clearRect(0,0,canvas.width,canvas.height);
+		
+		function Rect(x,y,w,h,color){
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.color = color;
+		}
+		Rect.prototype.draw = function(){
+			context.beginPath();
+			context.rect(this.x,this.y,this.w,this.h);
+			context.fillStyle = this.color;
+			context.fill();
+		}
+		
+		var rect1 = new Rect(100,100,50,50,"pink");
+		
+		var timer = setInterval(function(){
+			context.clearRect(0,0,canvas.width,canvas.height);
+			rect1.x += 2;
+			rect1.draw();
+		},30)
+
+
+	</script>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		var ajax = {};
+		if(window.XMLHttpRequest){
+			ajax = new XMLHttpRequest();
+		}else if(window.ActiveXObject){
+			ajax = new ActiveXObject();
+		}
+		
+		ajax.open("get","18.ajax_server.php");
+		
+		ajax.send();
+		
+		ajax.onreadystatechange = function(){
+			if(ajax.readyState == 4){
+				if(ajax.state == 200){
+					succ(ajax.responseText);
+				}
+			}
+		}
+		
+		function succ(data){
+			var arr = JSON.parse(data);
+			console.log(data);
+			
+		}
+		
+		
+	</script>
+</html>

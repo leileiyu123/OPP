@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>构造函数</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		//创建构造函数  类似 类
+		//与工厂模式的区别：不需要创建一个新的对象，在调用时使用new运算符来调用实行（实例化对象）
+		//构造函数强烈建议首字母大写！！！
+		function Student(name,sex){
+			//属性
+			//想要给我们实例化的对象设置属性和方法，只需要使用this来进行设置即可
+			this.name = name;
+			this.sex = sex;
+			
+			//方法
+			//在方法中我们想要使用我们对象的属性和方法，只需要用this来调用即可
+			this.intro = function(){
+				this.say();
+				//alert("姓名：" + this.name + "\n" + "性别：" + this.sex);
+			}
+			this.say = function(){
+				//alert("hi,friends");
+			}
+			//构造函数不需要进行创建对象的返回
+		}
+		
+		//使用new运算符来调用实行（实例化对象）
+		var student = new Student("小米","女");
+		console.log(student);
+		student.intro();
+		
+		var student1 = new Student("多多","女");
+		console.log(student1);
+		student1.intro();
+		
+		
+		//练习
+		function Flower(type,color){
+			this.type=type;
+			this.color=color;
+			
+			this.intro = function(){
+				this.say();
+				//alert("种类:"+ this.type + "\n" + "颜色：" + this.color);
+			}
+			this.say = function(){
+				//alert("hello!");
+			}
+		}
+		var flower = new Flower("玫瑰","白");
+		flower.intro();
+		console.log(flower);
+	</script>
+</html>

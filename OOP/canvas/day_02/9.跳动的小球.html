@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>跳动的小球</title>
+		<style type="text/css">
+			#myCanvas{
+				border: 2px solid #8B4513;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="700" height="700"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+		//随机函数
+		function random(max,min){
+			return parseInt(Math.random()*(max-min+1))+min;
+		}
+
+		//创建球的构造函数
+		function Qiu(x,y,r,color,spX,spY){
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.color = color;
+			this.spX = spX;
+			this.spY = spY;
+		}
+		//给球添加方法
+		Qiu.prototype.draw = function(){
+			context.beginPath();
+			context.fillStyle = this.color;
+			context.arc(this.x,this.y,this.r,0,360*deg);
+			context.fill();
+		}
+		Qiu.prototype.move = function(){
+			this.x += this.spX;
+			this.y += this.spY;
+			if(this.x<16){
+				this.spX *=-1;
+			}else if(this.x>684){
+				this.spX *=-1;
+			}
+			if(this.y<16){
+				this.spY *=-1;
+			}else if(this.y>684){
+				this.spY *=-1;
+			}
+		}
+		//创建球的个数
+		var arr = [];
+		for(var i=0;i<200;i++){
+			var x = random(684,16);
+			var y = random(684,16);
+			var c = random(16,8);
+			var r = random(255,0);
+			var g = random(255,0);
+			var b = random(255,0);
+			var a = random(255,0);
+			var spX = random(5,-5);
+			var spY = random(5,-5);
+			if(spX==0 || spY==0){
+				spX = 3;
+				spY = 3;
+			}
+			var qiu = new Qiu(x,y,c,"rgba("+ r +","+ g+","+ b +","+ a +")",spX,spY);
+			qiu.draw();
+			arr.push(qiu);
+		}
+
+		function ani(){
+			context.clearRect(0,0,canvas.width,canvas.height);
+			for(var i=0;i<arr.length;i++){
+				arr[i].draw();
+				arr[i].move();
+			}
+			window.requestAnimationFrame(ani);
+		}
+		ani();
+	</script>
+</html>

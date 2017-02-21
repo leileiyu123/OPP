@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>原型链</title>
+	</head>
+	<body>
+		<div id="outer"></div>
+	</body>
+	<script type="text/javascript">
+		
+		function Person(name){
+			this.name = name;
+			this.talk = function(){
+				console.log(this.name);
+			}
+		}
+		
+		//原型链的一个查找路径可以看下我们的document的getElementById方法如何进行的查找进行回顾
+		//只有document上有getElementById方法
+		//原型链的查找路径是先看自身对象是否设置了对应的属性或方法
+		//如果有就直接使用，如果没有就去找对应原型中是否存在
+		//如果原型中还不存在就会根据我们的原型链继续向上级进行查找
+		//Object的原型是终点，如果一路找上来在Object的原型上还是没有找到我们需要的属性或方法就会返回undefined
+		var divs = document.getElementById("outer");
+		console.log(divs);
+		
+//		Person.prototype.say = function(){
+//			console.log("我是proto");
+//		}
+		
+		//Object 只允许追加
+//		Object.prototype.say = function(){
+//			console.log("我是顶端");
+//		}
+
+//		console.log(document);
+		
+		var person = new Person("leilei");
+//		person.say();
+		console.log(person);
+	</script>
+</html>

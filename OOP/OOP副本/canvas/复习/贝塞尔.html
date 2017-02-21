@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body{
+				margin: 0;
+				padding: 0;
+			}
+			#myCanvas{
+				border: 2px solid #8B4513;
+			}
+			button{
+				outline: none;
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				position: absolute;
+				border: 0 solid transparent;
+			}
+			#qiu1{
+				left: 85px;
+				top: 85px;
+				background: red;
+			}
+			#qiu2{
+				left: 385px;
+				top: 385px;
+				background: blue;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="700" height="700"></canvas>
+		<button id="qiu1"></button>
+		<button id="qiu2"></button>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		var qiu1 = document.getElementById("qiu1");
+		var qiu2 = document.getElementById("qiu2");
+		
+		function Bezier(qiu1X,qiu1Y,qiu2X,qiu2Y){
+			this.qiu1 = {};
+			this.qiu1.x = qiu1X;
+			this.qiu1.y = qiu1Y;
+			
+			this.qiu2 = {};
+			this.qiu2.x = qiu2X;
+			this.qiu2.y = qiu2Y;
+		}
+		
+		Bezier.prototype.draw = function(){
+			context.fillStyle = "darkgray";
+			context.fillRect(100,100,300,300);
+			
+			context.save();
+			context.beginPath();
+			context.moveTo(100,400);
+			context.lineTo(this.qiu1.x,this.qiu1.y);
+			context.lineWidth = 2;
+			context.strokeStyle = "red";
+			context.stroke();
+			context.restore();
+			
+			context.save();
+			context.beginPath();
+			context.moveTo(400,100);
+			context.lineTo(this.qiu2.x,this.qiu2.y);
+			context.lineWidth = 2;
+			context.strokeStyle = "red";
+			context.stroke();
+			context.restore();
+			
+			context.save();
+			context.beginPath();
+			context.moveTo(100,400);
+			context.bezierCurveTo(this.qiu1.x,this.qiu1.y,this.qiu2.x,this.qiu2.y,400,100);
+			context.lineWidth = 10;
+			context.strokeStyle = "black";
+			context.stroke();
+			context.restore();
+		}
+		var bezier = new Bezier(100,100,400,400);
+		bezier.draw();
+		
+		qiu1.onmousedown = qiu2.onmousedown = function(){
+			var _this = this;
+			document.onmousemove = function(e){
+				var ev = e || window.event;
+				var x = ev.clientX;
+				var y = ev.clientY;
+				if(_this.id=="qiu1"){
+					bezier.qiu1.x = x;
+					bezier.qiu1.y = y;
+				}
+				if(_this.id=="qiu2"){
+					bezier.qiu2.x = x;
+					bezier.qiu2.y = y;
+				}
+				_this.style.left = x-15+"px";
+				_this.style.top = y-15+"px";
+				
+				context.clearRect(0,0,canvas.width,canvas.height);
+				bezier.draw();
+			}
+			document.onmouseup = function(){
+				document.onmousemove = "";
+			}
+		}
+	</script>
+</html>

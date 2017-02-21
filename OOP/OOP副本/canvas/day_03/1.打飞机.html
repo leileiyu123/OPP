@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<style type="text/css">
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+			}
+			
+			#myCanvas {
+				/*border: 2px solid #8B4513;*/
+			}
+			#h{
+				width: 300px;
+				height: 100px;
+				color: red;
+				font: bold 50px/100px "微软雅黑";
+				text-align: center;
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 220px;
+				margin: 0 auto;
+				display: none;
+			}
+			#score{
+				width: 200px;
+				height: 40px;
+				color: red;
+				font-size: 30px;
+				line-height: 40px;
+				text-align: center;
+				position: absolute;
+				left: 0;
+				right:0;
+				top: 40px;
+				margin: 0 auto;
+				/*border: 1px solid black;*/
+		}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="myCanvas" width="" height=""></canvas>
+		<h2 id="h">Game Over</h2>
+		<div id="score">得分：0</div>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var h = document.getElementById("h");
+		var score = document.getElementById("score");
+		var scores = 0;
+		//预加载方法
+		//loading(属性1，属性2）属性1代表下面loading传进来的第一个对象(图片)
+		//属性2下面loading传进来的第二个对象(方法)
+		function loading(objImg, obj) {
+			//用来储存我们一共需要加载的图片数量
+			var length = 0;
+			//用循环 获取一共有多张图片
+			for(var keys in objImg) {
+				length++; //计算总图片数量
+			}
+			//用来储存我们当前加载完成的图片数量
+			var num = 0;
+			//储存我们的img对象
+			var imgObj = {};
+			console.log(imgObj)
+				//每进一次循环就代表加载好了一张图片
+			for(var keys in objImg) {
+				var img = new Image();
+				img.src = objImg[keys];
+
+				//for循环里面绑定的 事件 中的 变量 会被污染 
+				//方法一 利用闭包解决污染
+				//因为闭包是匿名函数的自执行
+				//所以这里相当于把我们的匿名函数执行了
+				//而匿名函数执行时我们this的指向就是我们的window
+				img.onload = (function(keyy, imgs) { //keyy,imgs形参
+						//console.log("外层是");
+						//console.log(this); //闭包 匿名函数自执行 window
+						//在该闭包中我们让匿名函数返回出去了一个方法
+						//所以最终实现的效果就是给我们的img.onload绑定了一个方法
+						//只不过这个方法中使用的就是我们当前循环变量不再是我们循环结束后的最后一个值了
+						//而此时当这个方法执行时真正的执行者就是我们的当前加载好的图片
+						//所以此时的this就是我们的img对象
+						return function() {
+							//console.log("内层是");
+							//console.log(this);
+							num++; //计算加载完成图片的数量
+							imgObj[keyy] = imgs;
+							//加载进度
+							var loads = num / length;
+							//如果设置了获取进度的方法就在每次进度发生变化也就是我们又有一张图片加载完成的时候
+							//帮我们的用户调用我们的进度方法，并将进度传递进去
+							if(obj.load) {
+								obj.load(loads);
+							}
+							//当我们加载完成的图片数量大于等于我们总得图片数量的时候,就代表此时如果用户需要我们帮他调用完成方法
+							//我们就需要帮用户调用完成方法,并将我们加载好img对象用来储存在imgObj对象传入我们的完成方法中
+							//这样我们就能够在完成方法中接受到我们的对象并进行使用了
+							if(num >= length) {
+								if(obj.complete) {
+									obj.complete(imgObj);
+								}
+							}
+						}
+					})(keys, img) //实参
+
+				//解决污染 方法二
+				//				img.keyss = keys;
+				//				img.onload = function() {
+				//					num++;
+				//					imgObj[this.keyss] = this; //this代表当前img
+				//					//加载进度
+				//					var loads = num / length;
+				//					if(obj.load) {
+				//						obj.load(loads);
+				//					}
+				//					if(num >= length) {
+				//						if(obj.complete) {
+				//							obj.complete(imgObj);
+				//						}
+				//					}
+				//				}
+			}
+		}
+
+		//预加载方法能够帮我们实现图片的加载以及加载完成后调用我们要执行的方法，并有进度传递
+		//		context.drawImage(imgObj);
+		loading({
+			"bg": "img/background.png",
+			"hero": "img/herofly.png",
+			"bullet": "img/bullet2.png",
+			"enemy1": "img/enemy1.png",
+			"enemy2": "img/enemy2.png",
+			"enemy3": "img/enemy3.png"
+		}, {
+			complete: main,
+			load: load
+		})
+		//主函数，加载完成才执行的方法
+		function main(imgObj) {
+			//获取设备宽高，并且在移动端需要配合meta才能有效
+			var windowWidth = document.documentElement.clientWidth;
+			var windowHeight = document.documentElement.clientHeight;
+			//将canvas大小设置成全屏
+			canvas.width = windowWidth;
+			canvas.height = windowHeight;
+			
+			//英雄机构造函数
+			function Hero() {
+				this.img = imgObj.hero;
+				this.x = canvas.width / 2 - this.img.width / 5 / 2;
+				this.y = canvas.height - this.img.height * 2;
+				this.w = this.img.width / 5;
+				this.h = this.img.height;
+				this.len = 5;
+				this.life = true;
+				this.index = 0;
+			}
+			//英雄机绘制方法
+			Hero.prototype.draw = function() {
+				//因为我们的英雄机图片是精灵图，所以需要裁剪才能使用，所以就需要使用drawImage的九个参数的方法
+				context.drawImage(this.img, this.index*this.w, 0, this.w, this.h, this.x, this.y, this.w, this.h);
+			}
+			
+			//子弹构造函数
+			function Bullet() {
+				this.img = imgObj.bullet;
+				this.w = this.img.width;
+				this.h = this.img.height;
+				//让我们的子弹根据我们飞机的位置进行绘制
+				this.x = hero.x + (hero.w - this.w) / 2;
+				this.y = hero.y - 2 * this.h;
+				this.speedY = 5;
+				this.power = 1;
+			}
+			Bullet.prototype.draw = function() {
+				context.drawImage(this.img, this.x, this.y);
+			}
+			//子弹移动方法
+			Bullet.prototype.move = function() {
+				this.y -= this.speedY;//子弹自下往上大所以y坐标不停减小
+			}
+			
+			//敌机构造函数
+			function Enemy() {
+				//根据随机数来决定下面要绘制哪种敌机
+				var num = rand(1, 20);
+				if(num >= 1 && num <= 10) {
+					//绘制小敌机
+					this.img = imgObj.enemy1;
+					//精灵图所以需要控制宽度
+					this.w = this.img.width / 5;
+					this.hp = 1;
+					this.len = 5;
+					this.speedY = 6;
+				} else if(num >= 11 && num <= 17) {
+					//中等飞机
+					this.img = imgObj.enemy3;
+					this.w = this.img.width / 6;
+					this.hp = 3;
+					this.len = 6;
+					this.speedY = 4;
+				} else {
+					//大敌机
+					this.img = imgObj.enemy2;
+					this.w = this.img.width / 10;
+					this.hp = 8;
+					this.len = 10;
+					this.speedY = 1;
+				}
+				//敌机的绘制返回不能超出屏幕
+				this.x = rand(0, canvas.width - this.w);
+				this.h = this.img.height;
+				//从刚刚超出屏幕开始向下绘制
+				this.y = -this.h;
+				this.index = 0;
+				this.life = true;
+			}
+			//精灵图使用需要裁剪
+			Enemy.prototype.draw = function() {
+				context.drawImage(this.img, this.index * this.w, 0, this.w, this.h, this.x, this.y, this.w, this.h);
+			}
+			//向下移动所以y坐标增加
+			Enemy.prototype.move = function() {
+				this.y += this.speedY;
+			}
+			var hero = new Hero();//英雄机对象
+			var bulletArr = [];//用来存储子弹的数组
+			var enemyArr = [];//用来存储敌机的数组
+
+			var times = 0;//计数器
+			var timer = "";
+			function ani() {
+				//当背景滑动达到一个canvas大小时让背景回到原位
+				if(times >= canvas.height) {
+					times = 0;
+				}
+				context.clearRect(0, 0, canvas.width, canvas.height);
+				//背景动画使用两张背景图组合完成
+				context.drawImage(imgObj.bg, 0, times, canvas.width, canvas.height);
+				context.drawImage(imgObj.bg, 0, times - canvas.height, canvas.width, canvas.height);
+				times++;//让计数器增加来让两张图向下移动
+				
+				//不想子弹绘制太快使用计数器来进行控制
+				if(times % 20 == 0) {
+					var bullet = new Bullet();
+					bulletArr.push(bullet);//将创建好的新的子弹放到我们的子弹数组中
+				}
+				//对我们的子弹数组进行循环
+				for(var i = 0; i < bulletArr.length; i++) {
+					//判断此时子弹是否超出了我们的视野,如果超出了我们的视野此时需要将子弹
+					//从我们的数组中去除来提高我们的性能
+					if(bulletArr[i].y <= -bulletArr[i].h) {
+						bulletArr.splice(i, 1);
+						i--;
+						//因为我们此时将这一个子弹从数组中去除了所以不需要再对子弹进行绘制
+						//和移动所以需要跳出本次循环进行下次循环
+						continue; //结束本次循环，进入下一次循环
+					}
+					bulletArr[i].move();
+					bulletArr[i].draw();
+				}
+				//控制敌机的创建
+				if(times % 50 == 0) {
+					var enemy = new Enemy();
+					enemyArr.push(enemy);//创建好的敌机放入数组用于下面遍历
+				}
+				//对敌机进行遍历
+				for(var j = 0; j < enemyArr.length; j++) {
+					//判断是否需要将敌机清除出数组
+					if(enemyArr[j].y >= canvas.height) {
+						enemyArr.splice(j, 1);
+						j--;
+						continue;
+					}
+					//移动和绘制
+					enemyArr[j].move();
+					if(enemyArr[j].life == false) {
+						if(enemyArr[j].index < enemyArr[j].len) {
+							if(times % 5 == 0) {
+								enemyArr[j].index++;
+							}
+							enemyArr[j].draw();
+						} else {
+							enemyArr.splice(j, 1);
+							j--;
+//							scores++;
+//							score.innerHTML = "得分:" + scores;
+							continue;
+						}
+					}
+					enemyArr[j].draw();
+				}
+
+				for(var k = 0; k < bulletArr.length; k++) {
+					for(var n = 0; n < enemyArr.length; n++) {
+						if(peng(bulletArr[k], enemyArr[n])) {
+							enemyArr[n].hp -= bulletArr[k].power;
+							bulletArr.splice(k, 1);
+							k--;
+							if(enemyArr[n].hp <= 0) {
+								scores++;//?
+								score.innerHTML = "得分:" + scores;
+								enemyArr[n].life = false;
+								enemyArr[n].speedY = 0;
+								n--;
+								break;
+							}
+							break;
+						}
+					}
+				}
+
+				for(var m = 0; m < enemyArr.length; m++) {
+					if(enemyArr[m].life == true) {
+						if(peng(hero, enemyArr[m])) {
+							hero.life = false;
+						}
+					}
+				}
+
+				timer = window.requestAnimationFrame(ani);
+				
+				if(hero.life == false){
+					if(hero.index < hero.len){
+						if(times%5==0){
+							hero.index++;
+						}
+						hero.draw();
+					}
+					if(hero.index == hero.len-1){
+						window.cancelAnimationFrame(timer);
+						h.style.display = "block";
+					}
+				}
+				hero.draw();
+			}
+			ani();
+			//移动端触屏事件
+			canvas.addEventListener("touchmove", function(e) {
+				var ev = e || window.event;
+				var x = ev.touches[0].clientX;
+				var y = ev.touches[0].clientY;
+				hero.x = x - hero.w / 2;
+				hero.y = y - hero.h / 2;
+			}, false)
+		}
+		//随机数方法
+		function rand(min, max) {
+			return parseInt(Math.random() * (max - min + 1)) + min;
+		}
+
+		//碰撞检测
+		function peng(obj1, obj2) {
+			if(obj1.x < obj2.x + obj2.w && obj1.y < obj2.y + obj2.h && obj2.x < obj1.x + obj1.w && obj2.y < obj1.y + obj1.h) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		function load(loads) {
+			//			console.log(loads);
+			//loadss.innerHTML = loads;
+			//alert("当前加载了" + loads);
+			//console.log("加载了");
+
+		}
+	</script>
+
+</html>

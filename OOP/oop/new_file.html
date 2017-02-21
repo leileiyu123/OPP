@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		function Flower(type,color){
+			var obj = {};
+			obj.type = type;
+			obj.color = color;
+			obj.say = function(){
+				console.log(11);
+			}
+			return obj;
+		}
+		var flower = new Flower("玫瑰","红");
+		console.log(flower);
+		flower.say();
+		
+		
+		function Person(name,age){
+			this.name = name;
+			this.age = age;
+			
+		}
+		Person.prototype.say = function(){
+			console.log("我的名字是" + this.name);
+		}
+		
+		function Student(name,age,className){
+			Person.apply(this,arguments);
+			this.className = className;
+		}
+		
+		Student.prototype = Person.prototype;
+		
+		var person = new Person("vi",18);
+		person.say();
+		console.log(person);
+		
+		var stu = new Student("li",11,"20133");
+		stu.say();
+		console.log(stu);
+		
+		
+		function Dog(name,age){
+			this.name=name;
+			this.age=age;
+		}
+		Dog.prototype.eat = function(){
+			console.log("chifan");
+		}
+		function Cat(){
+			
+		}
+		function Lin(){}
+		Lin.prototype = Dog.prototype;
+		var proto = new Lin();
+		Cat.prototype = proto;
+		Cat.prototype.constructor = Cat;
+		
+		Cat.prototype.eat = function(){
+			console.log("chifanww");
+		}
+		var dog = new Dog("wawa",12);
+		dog.eat();
+		var cat = new Cat();
+		cat.eat();
+		
+		
+		
+		
+
+		
+		
+		
+	</script>
+</html>

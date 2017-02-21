@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>面向对象clock</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 0 3px red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+		function Clock(x,y,r,color){
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.color = color;
+		}
+		Clock.prototype.draw = function(){
+			context.beginPath();
+			context.arc(this.x,this.y,this.r,0,360*deg);
+			context.save();
+			context.fillStyle = this.color;
+			context.fill();
+			
+			context.translate(300,300);
+			
+			for(var i=0;i<60;i++){
+				context.save();
+				context.rotate(6*i*deg);
+				if(i%5 == 0){
+					context.fillStyle = "black";
+					context.fillRect(160,-6,30,12);
+				}else{
+					context.fillStyle = "#A52A2A";
+					context.fillRect(170,-5,20,10);
+				}
+				context.restore();
+			}
+			context.restore();
+		}
+		
+		Clock.prototype.drawZhen = function(){
+			
+			var nowDate = new Date();
+			var hour = nowDate.getHours();
+			var minute = nowDate.getMinutes();
+			var second = nowDate.getSeconds();
+			
+			sec = second;
+			minu = minute + second/60;
+			hour = hour + minute/60;
+			
+			context.save();
+			context.translate(300,300);
+			//设置初始状态
+			context.rotate(-90*deg);
+			
+			context.save();
+			//设置我的时针偏移
+			context.rotate(hour*30*deg);
+			//绘制时针
+			context.fillStyle = "black";
+			context.fillRect(0,-5,60,10);
+			context.restore();
+			
+			context.save();
+			//设置我的分针偏移
+			context.rotate(minu*6*deg);
+			//绘制分针
+			context.fillStyle = "red";
+			context.fillRect(0,-4,80,8);
+			context.restore();
+			
+			context.save();
+			//设置我的秒针偏移
+			context.rotate(sec*6*deg);
+			//绘制秒针
+			context.fillStyle = "blue";
+			context.fillRect(0,-3,100,6);
+			//结束秒针的画布影响
+			context.restore();
+			
+			//回到画布初始状态
+			context.restore();
+		}
+		
+		var clock = new Clock(300,300,200,"cyan");
+		clock.draw();
+		clock.drawZhen();
+		
+		setInterval(function(){
+			clock.draw();
+			clock.drawZhen();
+		},1000)
+	</script>
+</html>

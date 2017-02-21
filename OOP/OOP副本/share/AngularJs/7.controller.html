@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="test" ng-init="c=11">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+	</head>
+	<body ng-controller="aa" ng-init="d=10">
+		<span>{{a*b*c*d}}</span>
+	</body>
+	<script src="angular.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var app = angular.module("test",[]);
+		app.controller("aa",function($scope){
+			$scope.a = 12;
+			$scope.b = 10;
+			//能取到script的父级($scope.c)，取不到同级的值($scope.d)
+			console.log($scope.c);
+			
+		})
+		
+	</script>
+</html>

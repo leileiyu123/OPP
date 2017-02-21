@@ -1,0 +1,32 @@
+#myCanvas {
+	/*box-shadow: 0 0 10px cyan;*/
+	margin: auto;
+	display: block;
+}
+
+.showPeople {
+	width: 30%;
+	position: absolute;
+	left: 8px;
+	right: 0;
+	top: 25px;
+	margin: auto;
+}
+#score{
+	width: 20%;
+	height: 10%;
+	background: url(../img/image/SCORE.png) no-repeat;
+	background-size: 100% 100%;
+	position: absolute;
+	top: 30px;
+	left: 30px;
+}
+#btns {
+	width: 25%;
+	height: 14.08%;
+	background: url(../img/image/btn.png) no-repeat;
+	background-size: 100% 100%;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}

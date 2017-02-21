@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>克隆</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+	//克隆：不支持低版本浏览器
+	
+		var obj = {
+			name:"leilei"
+		}
+		console.log(obj);
+		
+		//使用JSON方法传进去一个对象或者数组会帮我们
+		//转化成json字符串并返回出来
+		var str = JSON.stringify(obj);
+		console.log(str);
+		console.log(typeof str);
+		
+		
+		//使用该JSON方法传进去一个json字符串
+		//会帮我们转成一个对象或者数组并帮我们返回出来
+		var obj1 = JSON.parse(str);
+		console.log(obj1);
+		console.log(typeof obj1);
+		
+		//typeof 类型的封装
+		//toLowerCase() ：首字母大小写
+		//toString()方法会返回一个表示对象本身类型的字符串
+		function type(obj){
+			var o = {};
+			return o.toString.call(obj).slice(8,-1).toLowerCase();
+		}
+		console.log(type([1,2,3,4]));
+	</script>
+</html>

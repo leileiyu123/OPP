@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>像素</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 3px red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		
+		var img = new Image();
+		img.src =" ../img/1.jpeg";
+		img.onload = function(){
+			context.drawImage(img,100,100,300,300);
+			
+			var obj = context.getImageData(100,100,300,300);
+			console.log(obj);
+			
+			var piexlsArr = obj.data;
+			for(var i=0;i<piexlsArr.length;i+=4){
+				var r = piexlsArr[i];
+				var g = piexlsArr[i+1];
+				var b = piexlsArr[i+2];
+				
+				//反色
+//				piexlsArr[i]=255-r;
+//				piexlsArr[i+1]=255-g;
+//				piexlsArr[i+2]=255-b;
+				
+				//灰度
+				var gray = parseInt((r+g+b)/3);
+				piexlsArr[i] = gray;
+				piexlsArr[i+1] = gray;
+				piexlsArr[i+2] = gray;
+			}
+			context.putImageData(obj,0,0);
+		}
+	</script>
+</html>

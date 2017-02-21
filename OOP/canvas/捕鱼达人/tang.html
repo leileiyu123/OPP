@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			html {
+				overflow: hidden;
+			}
+			
+			.count {
+				height: 50px;
+				/* width: 100px; */
+				font-size: 20px;
+				position: absolute;
+				top: 0px;
+				left: 40%;
+				color: yellow;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="canvas" width="1024" height="768"></canvas>
+		<div class="count">
+			您获得的分数为：<span></span>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var sp = document.querySelector(".count span");
+		var oc = document.getElementById('canvas');
+		var ctx = oc.getContext('2d');
+		//bgimg的寛高
+		var ih = 768;
+		var iw = 1024;
+		//可视高度
+		var viewHeight = document.documentElement.clientHeight;
+		ih = viewHeight < ih ? viewHeight : ih;
+
+		//炮筒寛高
+		var cannonWidth = 57;
+		var cannonHeight = 64;
+		var cannonRotate = 0;
+		//子弹对应的参数
+		var bulletWidth = 24;
+		var bulletHeight = 26;
+		var bulletSpeed = 5; //通过直角三角形分为x，y
+		var bulletData = []; //数组存放所有子弹
+		var bulletRotate = 0;
+		//鱼的寛高
+		var fishHeight = 37;
+		var fishWidth = 55;
+		var fishSpeed = 1;
+		var fishData = [];
+		//金币的寛高
+		var moneyData = [];
+		var moneyWidth = 60;
+		var moneyHeight = 60;
+		var count = 0; //计分器
+
+		loadImgs(["bg.jpg", "bullet.png", "cannon.png", "fish.png", "gold.png"],
+			function(imgs) {
+				setInterval(function() {
+					ctx.clearRect(0, 0, oc.width, oc.height);
+
+					//速度
+					for(var i = 0; i < bulletData.length; i++) {
+						bulletData[i].x += bulletData[i].sX;
+						bulletData[i].y += bulletData[i].sY;
+						//子弹出了可视区域
+						if(bulletData[i].x < 0 || bulletData[i].y < 0 || bulletData[i].x > iw) {
+							bulletData.splice(i, 1);
+						}
+					}
+					//背景
+					ctx.save();
+					var bg = ctx.createPattern(imgs['bg'], 'no-repeat');
+					ctx.fillStyle = bg;
+					ctx.fillRect(0, 0, iw, ih)
+					ctx.restore();
+
+					//子弹
+					for(var i = 0; i < bulletData.length; i++) {
+						ctx.save();
+						ctx.translate(bulletData[i].x, bulletData[i].y);
+						ctx.rotate(bulletData[i].r);
+						ctx.translate(-bulletWidth / 2, -bulletHeight / 2);
+						ctx.drawImage(imgs['bullet'], 0, 0, bulletWidth, bulletHeight);
+						ctx.restore();
+					}
+
+					//鱼
+					for(var i = 0; i < fishData.length; i++) {
+						ctx.save();
+						ctx.translate(fishData[i].x, fishData[i].y);
+						ctx.rotate(fishData[i].r);
+						ctx.translate(-fishWidth / 2, -fishHeight / 2);
+						ctx.drawImage(imgs['fish'], 0, Math.floor(fishData[i].iNow) * fishHeight, fishWidth, fishHeight, 0, 0, fishWidth, fishHeight);
+						ctx.restore();
+					}
+
+					//鱼速度
+					for(var i = 0; i < fishData.length; i++) {
+						fishData[i].x += fishData[i].sX;
+						fishData[i].y += fishData[i].sY;
+						fishData[i].iNow += 0.1;
+						if(fishData[i].iNow > 4) {
+							fishData[i].iNow = 0;
+						}
+						//鱼出了可视区域
+						if(fishData[i].x < 0 || fishData[i].y < 0 || fishData[i].x > iw || fishData[i].y > ih) {
+							fishData.splice(i, 1);
+						}
+					}
+
+					//金币
+					for(var i = 0; i < moneyData.length; i++) {
+						moneyData[i].iNow += 0.3;
+						if(moneyData[i].iNow >= 10) {
+							moneyData[i].iNow = 0;
+
+							moneyData.splice(i, 1);
+						}
+					}
+
+					//鱼和子弹碰撞
+					for(var i = 0; i < bulletData.length; i++) {
+						for(var j = 0; j < fishData.length; j++) {
+							if(pz(bulletData[i].x, bulletData[i].y, fishData[j].x, fishData[j].y)) {
+								moneyData.push({
+									x: fishData[j].x,
+									y: fishData[j].y,
+									iNow: 0,
+								})
+
+								bulletData.splice(i, 1);
+								fishData.splice(j, 1);
+								count += 10;
+								break;
+							}
+						}
+					}
+
+					//炮筒
+					ctx.save();
+					ctx.translate(iw / 2, ih - cannonHeight / 2);
+					ctx.rotate(cannonRotate);
+					ctx.translate(-cannonWidth / 2, -cannonHeight / 2);
+					ctx.drawImage(imgs['cannon'], 0, 0, cannonWidth, cannonHeight);
+					ctx.restore();
+
+					//金币
+					for(var i = 0; i < moneyData.length; i++) {
+						ctx.save();
+						ctx.translate(moneyData[i].x - moneyWidth / 2, moneyData[i].y - moneyHeight / 2);
+						ctx.drawImage(imgs['gold'], 0, Math.floor(moneyData[i].iNow) * moneyHeight, moneyWidth, moneyHeight, 0, 0, moneyWidth, moneyHeight);
+						ctx.fillStyle = "lawngreen";
+						ctx.fillText("+10", 0, Math.floor(moneyData[i].iNow) * moneyHeight);
+						ctx.fill();
+						ctx.restore();
+						count += 10;
+						sp.innerHTML = count;
+					}
+
+				}, 1000 / 60);
+				setInterval(function() {
+					var x = iw;
+					var y = Math.random() * ih;
+					var rotate = 0;
+					var a = iw / 2 - x;
+					var b = ih / 2 - y;
+					var c = Math.sqrt(a * a + b * b);
+					var sX = fishSpeed * a / c;
+					var sY = fishSpeed * b / c;
+
+					if(a < 0 && b > 0) { //第二象限初始化鱼头方向(左边)
+						rotate = -(Math.asin(b / c) + Math.PI / 2) - Math.PI / 2;
+					} else if(a < 0) { //第四象限
+						rotate = Math.asin(a / c) - Math.PI / 2;
+					}
+					if(a > 0 && b > 0) { //第一象限
+						rotate = (Math.asin(b / c) + Math.PI / 2) - Math.PI / 2;
+					} else if(a > 0) { //第三象限
+						rotate = Math.asin(a / c) - Math.PI / 2;
+					}
+
+					fishData.push({
+						x: iw,
+						y: Math.random() * ih,
+						sX: sX,
+						sY: sY,
+						r: rotate,
+						iNow: 0,
+					})
+				}, 400)
+				oc.onmousemove = function(ev) {
+					var x = ev.pageX - oc.offsetLeft;
+					var y = ev.pageY - oc.offsetTop;
+					var a = x - iw / 2;
+					var b = y - ih - cannonHeight / 2;
+					var c = Math.sqrt(a * a + b * b);
+					cannonRotate = Math.asin(a / c); //获得的弧度
+				}
+				oc.onmousedown = function(ev) {
+					var x = ev.pageX - oc.offsetLeft;
+					var y = ev.pageY - oc.offsetTop;
+					var a = x - iw / 2;
+					var b = y - ih - cannonHeight / 2;
+					var c = Math.sqrt(a * a + b * b);
+					var sX = bulletSpeed * a / c;
+					var sY = bulletSpeed * b / c;
+					bulletRotate = Math.asin(a / c);
+					bulletData.push({
+						x: iw / 2,
+						y: ih - cannonHeight / 2,
+						sX: sX,
+						sY: sY,
+						r: bulletRotate,
+					})
+				}
+			})
+
+		function loadImgs(arr, fnSucc) {
+			var iNow = 0;
+			var json = {};
+			for(var i = 0; i < arr.length; i++) {
+				var img = new Image();
+				img.onload = function() {
+					iNow++;
+					if(iNow == arr.length) {
+						fnSucc(json);
+					}
+				}
+				img.src = "img/" + arr[i];
+				var name = arr[i].split('.')[0];
+				json[name] = img;
+
+			}
+
+		}
+
+		function pz(x1, y1, x2, y2) {
+			var a = x1 - x2;
+			var b = y1 - y2;
+			var c = Math.sqrt(a * a + b * b);
+			var dur = 30;
+			if(c < dur) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	</script>
+
+</html>

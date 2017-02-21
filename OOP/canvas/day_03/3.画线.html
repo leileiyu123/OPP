@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>画线</title>
+		<style type="text/css">
+			#myCanvas{
+				border: 2px solid #8B4513;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		
+		function Line(x1, y1, x2, y2) {
+			this.x1 = x1;
+			this.y1 = y1;
+			this.x2 = x2;
+			this.y2 = y2;
+		}
+		Line.prototype.draw = function(){
+			context.save();
+			context.beginPath();
+			context.moveTo(this.x1,this.y1);
+			context.lineTo(this.x2,this.y2);
+			context.lineWidth = 2;
+			context.stroke();
+			context.restore();
+		}
+		Line.prototype.move1 = function(){
+			if((this.x2>=100&&this.x2<=300) && (this.y2>=100&&this.y2<=300)){
+				this.x2 = this.x1++;
+				this.y2 = this.y1++;
+			}else if(this.x2>300&&this.y2>300){
+				this.x2++;
+				this.y2;
+			}
+		}
+		
+		Line.prototype.move2 = function(){
+			if((this.x2>=50&&this.x2<=200) && (this.y2<=400&&this.y2>=200)){
+				this.x2 = this.x1++;
+				this.y2 = this.y1--;
+			}else if(this.x2>200){
+				this.x2++;
+				this.y2++;
+			}
+		}
+		
+		Line.prototype.move3 = function(){
+			if(this.y2<=400){
+				this.x2 = this.x1;
+				this.y2 = this.y1++;
+			}else if(this.y2>400){
+				this.x2--;
+				this.y2++;
+			}
+		}
+		
+		var line1 = new Line(100,100,100,100);
+		var line2 = new Line(50,400,50,400);
+		var line3 = new Line(400,80,400,80);
+		
+		
+		function ani(){
+
+			line1.move1();
+			line1.draw();
+			
+			line2.move2();
+			line2.draw();
+			
+			line3.move3();
+			line3.draw();
+			
+			window.requestAnimationFrame(ani);
+			
+			
+		}
+		ani();
+		
+	</script>
+</html>

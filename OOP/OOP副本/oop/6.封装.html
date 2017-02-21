@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>封装</title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+	 
+		function Person(name,age){
+			//JS中没有我们属性修饰符，所有通过作用于来实现属性的公开或私有
+			
+			//公有属性
+			this.name = name;
+			this.age = age;
+			//私有属性：只能在函数内部进行访问
+			var sex = "man";
+			
+			//公有方法
+			this.say = function(){
+				console.log("hahhah");
+			}
+			
+			//封装，对私有属性的一个保护
+			//对于私有属性如果想要外界能够进行设置
+			//我们可以给对应属性编写set方法来进行，并实现对属性的保护
+			this.setSex = function(sexs){
+				if(sexs == "man" || sexs =="women"){
+					sex = sexs;
+				}
+			}
+			//获取私有属性方法:get方法
+			this.getSex = function(){
+				return sex;
+			}
+			
+			//私有方法:只能在函数内部进行访问
+			var talk = function(){
+				console.log("我是talk");
+			}
+		}
+		
+		var person = new Person("leilei",18);
+		console.log(person);
+//		person.talk();
+		person.age = 3;
+		
+		person.setSex("women");
+		console.log(person.getSex());
+	</script>
+</html>

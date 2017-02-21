@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>贝塞尔曲线</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 0 3px saddlebrown;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="800" height="800"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+		context.beginPath();
+		context.moveTo(100,100);
+		context.quadraticCurveTo(200,50,100,200);
+//		context.stroke();
+//		context.fillStyle = "red";
+//		context.fill();
+		
+//		context.beginPath();
+		context.moveTo(100,100);
+		context.quadraticCurveTo(0,50,100,200);
+//		context.stroke();
+		context.fillStyle = "red";
+		context.fill();
+
+	</script>
+</html>

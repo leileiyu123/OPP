@@ -1,0 +1,23 @@
+#box{
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}
+.bg {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+#enter {
+	/*border: 1px solid black;*/
+	text-align: center;
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: auto;
+	bottom: 20px;
+	
+}
+#enter img {
+	width: 50%;
+}

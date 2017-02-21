@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>bezier</title>
+		<style type="text/css">
+			body,html{
+				margin: 0;
+				padding: 0;
+			}
+			#myCanvas{
+				border: 2px solid #8B4513;
+			}
+			button{
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				outline: none;
+				position: absolute;
+				border: 0 solid transparent;
+			}
+			#btn1{
+				left: 85px;
+				top: 85px;
+				background-color: red;
+			}
+			#btn2{
+				left: 385px;
+				top: 385px;
+				background-color: blue;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		<button id="btn1"></button>
+		<button id="btn2"></button>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		var btn1 = document.getElementById("btn1");
+		var btn2 = document.getElementById("btn2");
+		
+		function Bezier(qiu1X,qiu1Y,qiu2X,qiu2Y){
+			this.qiu1 = {};
+			this.qiu1.x = qiu1X;
+			this.qiu1.y = qiu1Y;
+			
+			this.qiu2 = {};
+			this.qiu2.x = qiu2X;
+			this.qiu2.y = qiu2Y;
+		}
+		Bezier.prototype.draw = function(){
+			context.fillStyle = "darkgray";
+			context.fillRect(100,100,300,300);
+			
+			context.save();
+			context.beginPath();
+			context.moveTo(100,400);
+			context.lineTo(this.qiu1.x,this.qiu1.y);
+			context.strokeStyle = "red";
+			context.stroke();
+			context.restore();
+			
+			context.save();
+			context.beginPath();
+			context.moveTo(400,100);
+			context.lineTo(this.qiu2.x,this.qiu2.y);
+			context.strokeStyle = "red";
+			context.stroke();
+			context.restore();
+			
+			context.save();
+			context.beginPath();
+			context.moveTo(100,400);
+			context.bezierCurveTo(this.qiu1.x,this.qiu1.y,this.qiu2.x,this.qiu2.y,400,100);
+			context.strokeStyle = "black";
+			context.lineWidth = 5;
+			context.stroke();
+			context.restore();
+			
+		}
+		
+		var bezier = new Bezier(100,100,400,400);
+		bezier.draw();
+		
+		btn1.onmousedown = btn2.onmousedown = function(){
+			var _this = this;
+			document.onmousemove = function(e){
+				var ev = e || window.event;
+				var x = ev.clientX;
+				var y = ev.clientY;
+				if(_this.id == "btn1"){
+					bezier.qiu1.x = x;
+					bezier.qiu1.y = y;
+				}
+				if(_this.id == "btn2"){
+					bezier.qiu2.x = x;
+					bezier.qiu2.y = y;
+				}
+				_this.style.left = x-15 + "px";
+				_this.style.top = y-15 + "px";
+				
+				context.clearRect(0,0,canvas.width,canvas.height);
+				bezier.draw();
+			}
+			document.onmouseup = function(){
+				document.onmousemove = "";
+			}
+			
+		}
+		
+
+	</script>
+</html>
+

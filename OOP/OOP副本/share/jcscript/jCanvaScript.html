@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 3px red;
+			}
+		</style>
+
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		<input type="button" name="btn" id="btn" value="btn" />
+	</body>
+	<script src="jCanvaScript.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+//		var canvas=document.getElementById('myCanvas')
+		var btn=document.getElementById('btn')
+//		var context=canvas.getContext('2d')
+		jc.start('myCanvas',true)//
+		jc.circle(100,301,50,'#0ff',1).name('c1').draggable()
+		jc.start('myCanvas')
+		btn.onclick=function(){
+			jc('.c1').color('#0cb').animate({x:200,y:200,radius:10},2000)
+		}
+		
+		
+	</script>
+</html>

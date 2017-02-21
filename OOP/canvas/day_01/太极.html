@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>圆+太极</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 5px rosybrown;
+				background: palegoldenrod;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+		
+//		context.translate(300,300);//旋转的第二种方法，在函数外部将画布偏移到圆心。但这种方法每个圆心都要减去偏移的x=300,y=300
+		function run(){
+			context.beginPath();
+			context.arc(300,300,200,0,180*deg,true);
+			context.fillStyle = "black";
+			context.fill();
+			context.stroke();
+		
+			context.beginPath();
+			context.arc(300,300,200,0,-180*deg,false);
+			context.fillStyle = "white";	
+			context.fill();
+			context.stroke();
+
+			context.beginPath();
+			context.arc(200,300,100,0,-180*deg,true);
+			context.fillStyle = "white";	
+			context.fill();
+		
+			context.beginPath();
+			context.arc(400,300,100,0,180*deg,false);
+			context.fillStyle = "black";
+			context.fill();
+		
+			context.beginPath();
+			context.arc(200,300,30,0,360*deg,true);
+			context.fillStyle = "black";
+			context.fill();
+		
+			context.beginPath();
+			context.arc(400,300,30,0,360*deg,false);
+			context.fillStyle = "white";
+			context.fill();
+		}
+		run();
+		
+		var timer = setInterval(function(){
+			context.clearRect(0,0,canvas.width,canvas.height);
+			context.translate(300,300);//方法一：在旋转之前偏移画布。但旋转度数后要将偏移量偏移回去
+			var s = 2;
+			context.rotate(s*deg);
+			context.translate(-300,-300);
+			run();
+		},20)
+
+
+		
+		
+	</script>
+</html>

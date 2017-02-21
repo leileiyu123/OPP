@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>bind</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+		var add = function(){
+			console.log("我执行了");
+			console.log(this);
+		}
+		var o = {name:"lei"};
+//		add();
+		//call方法和apply方法都是可以帮我们改变上下文并执行的方法 
+		//o指使add执行
+		//add.call(o);
+		//add.apply(o);
+		//虽然bind方法也会改变我们的上下文
+		//但是并不会帮我们去执行我们改变了上下文的方法，如果要执行需要手动执行一下
+		add.bind(o)();
+		
+		setInterval(function(){
+			//在定时器中this指的是window
+			console.log(this);
+		}.bind(o),2000)
+		</script>
+	</body>
+</html>

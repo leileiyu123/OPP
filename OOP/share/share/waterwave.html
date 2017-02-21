@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		
+		<title>waterwave</title>
+		<link rel="stylesheet" type="text/css" href="css/htmleaf-demo.css"/>
+		<link rel="stylesheet" type="text/css" href="css/lake.css"/>
+		<style type="text/css">
+			#container{
+				width:750px;
+				margin:30px auto;
+			}
+			img{
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<img src="img/lake1.png" id="img1"/>
+			<img src="img/lake2.png" id="img2" />
+			<img src="img/lake3.png" id="img3" />
+		</div>
+	</body>
+	<!--lake.js是一款可以制作水波倒影特效jQuery插件。
+	该jquery插件可将任何图片转换为canvas组件，使图片生成逼真的水波倒影效果。-->
+	<script src="js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/lake.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("#img1").lake({
+				"waves":6,//水波的数量
+				"scale":0.5
+			});
+			$('#img2').lake({
+			});
+
+			$('#img3').lake({
+				'speed': 0.5,//水波运动的速度
+				'scale': 1.5//水波波峰的高低
+			});
+			
+		})
+	</script>
+</html>

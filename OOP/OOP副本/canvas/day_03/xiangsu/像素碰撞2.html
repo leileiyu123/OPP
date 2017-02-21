@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#canvas1{
+			border: 1px solid red;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas1" width="500" height="500"></canvas>
+	<script type="text/javascript" src="loading.js"></script>
+	<script type="text/javascript">
+	var canvas1 = document.getElementById("canvas1");
+	var context = canvas1.getContext("2d");
+
+	function collide(obj1,obj2){
+			
+		var l1 = obj1.x;
+		var r1 = l1+obj1.w;
+		var t1 = obj1.y;
+		var b1 = t1+obj1.h;
+		
+		var l2 = obj2.x;
+		var r2 = l2+obj2.w;
+		var t2 = obj2.y;
+		var b2 = t2+obj2.h;
+		
+		if (r1>l2&&l1<r2&&b1>t2&&t1<b2){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	loading({
+		"img1":"img/1.png",
+		"img2":"img/2.png"
+	},{
+		complete:main
+	});
+
+	function main(loadedImgs){
+		//声明图片对象
+		var img1 = {
+			img: loadedImgs.img1,
+			x: 200,
+			y: 200,
+			w: loadedImgs.img1.width,
+			h: loadedImgs.img1.height
+		};
+		var img2 = {
+			img: loadedImgs.img2,
+			x: 0,
+			y: 0,
+			w: loadedImgs.img2.width,
+			h: loadedImgs.img2.height
+		};
+		document.onmousemove = function (ev){
+
+			context.clearRect(0, 0, 500, 500);
+			var ev = ev || window.event;
+			img2.x = ev.clientX - canvas1.offsetLeft;
+			img2.y = ev.clientY - canvas1.offsetTop;
+			//先绘制一张位置不变的图片
+			context.drawImage(img1.img, img1.x, img1.y,img1.w,img1.h);
+			//绘制随着鼠标坐标改变的图片
+			context.drawImage(img2.img,img2.x,img2.y,img2.w,img2.h);
+			//1.首先判断两个图片的矩形区域有无碰撞
+			if (collide(img1,img2)){
+				//装上了
+				//2.循环检测两位图在两张图片范围内是否有一点像素的alpha点都不为0，如果有则说明碰撞
+
+				var minx = img1.x<img2.x ? img1.x:img2.x;
+				var maxx = img1.x+img1.w<img2.x+img2.w ? img2.x+img2.w:img1.x+img1.w;
+				var miny = img1.y<img2.y ? img1.y : img2.y;
+				var maxy = img1.y+img1.h<img2.y+img2.h ? img2.y+img2.h:img1.y+img1.h;
+				
+				
+				context.clearRect(0, 0, 500, 500);
+				context.drawImage(img1.img, img1.x, img1.y);
+				var data1 = context.getImageData(minx, miny, maxx - minx, maxy - miny).data;
+				context.clearRect(0, 0, 500, 500);
+				context.drawImage(img2.img,img2.x,img2.y);
+				var data2 = context.getImageData(minx, miny, maxx - minx, maxy - miny).data;
+				context.drawImage(img1.img, img1.x, img1.y);
+				for(var i = 3; i < data1.length; i += 4)
+        				{
+		      		if(data1[i] > 0 && data2[i] > 0){
+//		      			document.title="xx";
+						console.log("撞上了");
+		      			break;//循环判断alpha值，这里可以设置透明阙值，比如把0改为0.2，意味着透明度为0.2时就认为不碰撞了
+		      		}else{
+		      			document.title ="y7u";
+		      		}
+		        }
+			}
+		}
+	}
+	</script>
+</body>
+</html>

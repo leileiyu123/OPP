@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>图形组合方式</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 3px red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+		<script type="text/javascript">
+			var canvas = document.getElementById("myCanvas");
+			var context = canvas.getContext("2d");
+			
+			
+			
+			context.fillStyle = "yellow";
+			context.fillRect(100,100,300,300);
+//			context.globalCompositeOperation = "source-in";//重叠部分
+//			context.globalCompositeOperation = "source-over";//默认，两个都显示，在目标图像(先画的)上显示源图像(后画的)
+//			context.globalCompositeOperation = "source-atop";//在目标图像(先画的)上显示源图像(后画的)的重叠部分
+//			context.globalCompositeOperation = "source-out";//显示后画的，不重叠部分
+//			context.globalCompositeOperation = "destination-over";//在源图像(后画的)上显示目标图像(先画的)
+//			context.globalCompositeOperation = "destination-atop";//在后画的上显示先画的重叠部分
+//			context.globalCompositeOperation = "destination-in";//重叠部分,显示先画的颜色
+			context.globalCompositeOperation = "destination-out";//显示先画的，不重叠部分,后画的是透明的
+//			context.globalCompositeOperation = "lighter";//显示源图像 + 目标图像
+//			context.globalCompositeOperation = "copy";//显示后画的
+			context.fillStyle = "darkmagenta";
+			context.fillRect(300,300,200,200);
+			
+			
+		</script>
+	
+		
+		
+	
+</html>

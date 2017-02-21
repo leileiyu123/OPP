@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>贝塞尔</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 3px rosybrown;
+			}
+			button{
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				outline: none;
+				border: 0px solid transparent;
+				position: absolute;
+			}
+			#btn1{
+				background-color: red;
+				left: 100px;
+				top: 100px;
+			}
+			#btn2{
+				background-color: blue;
+				left: 500px;
+				top: 500px;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		<button id="btn1"></button>
+		<button id="btn2"></button>
+		<h2 id="title"></h2>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var btn1 = document.getElementById("btn1");
+		var btn2 = document.getElementById("btn2");
+		var title = document.getElementById("title");
+		var deg = Math.PI/180;
+		x1 = btn1.offsetLeft;
+		y1 = btn1.offsetTop;
+		
+		
+		
+		context.fillStyle = "darkgray";
+		context.fillRect(100,100,400,400);
+		
+		context.beginPath();
+		context.moveTo(100,500);
+		context.bezierCurveTo(100,500,500,500,500,100);
+		context.lineWidth = 10;
+		context.stroke();
+		
+		context.beginPath();
+		context.moveTo(100,500);
+		context.lineTo(500,500);
+		context.lineWidth = 3;
+		context.stroke();
+		
+		context.beginPath();
+		context.moveTo(100,500);
+		context.lineTo(100,100);
+		context.lineWidth = 3;
+		context.stroke();
+		
+		context.beginPath();
+		context.moveTo(105,495);
+		context.lineTo(485,115);
+		context.strokeStyle = "darkgray";
+		context.lineWidth = 5;
+		context.stroke();
+		
+		function Circle(x,y,r,color1,color2){
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.color1 = color1;
+			this.color2 = color2;
+		}
+		Circle.prototype.draw = function(){
+			context.beginPath();
+			context.arc(this.x,this.y,this.r,0,360*deg);
+			context.strokeStyle = this.color1;
+			context.stroke();
+			context.fillStyle = this.color2;
+			context.fill();
+		}
+		
+		var circle1 = new  Circle(100,500,10,"darkgrey","white");
+		circle1.draw();
+		
+		var circle2 = new  Circle(495,105,10,"darkgrey","white");
+		circle2.draw();
+		
+
+	</script>
+</html>

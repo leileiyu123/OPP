@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>index</title>
+	</head>
+
+	<body>
+		<div id="box">
+			<div>
+				<button>123</button>
+				<p id="index1">abc</p>
+			</div>
+			<div>
+				<button>456</button>
+				<p id="index2">efg</p>
+			</div>
+			<div>
+				<button>789</button>
+				<p id="index3">xyz</p>
+			</div>
+
+		</div>
+	</body>
+	<script src="../js/JQuery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+//		var indexs = $("p").index($("#index3"));
+		var indexs = $("#index3").index('p');
+		$("#box div p").eq(indexs).css("color","red");
+		console.log(indexs);
+	</script>
+
+</html>

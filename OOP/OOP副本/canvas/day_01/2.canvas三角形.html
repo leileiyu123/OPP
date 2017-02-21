@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>canvas三角形</title>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		
+		context.beginPath();
+		context.moveTo(100,100);
+		context.lineTo(300,300);
+		context.lineTo(100,400);
+//		context.lineTo(100,100);
+//		context.closePath();//闭合路径，会从当前点连接到起始点形成一个封闭路径
+//		context.stroke();//绘制线条
+		context.fillStyle = "#FFC0CB";
+		context.fill();//填充
+		
+		
+	</script>
+</html>

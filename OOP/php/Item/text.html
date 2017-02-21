@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Language" content="zh-CN">
+	<meta name="Keywords" content="SuperSlide,jQuery-竖向导航（商城导航）">
+	<meta name="Description" content="SuperSlide,jQuery-竖向导航（商城导航）">
+	<title>SuperSlide - 竖向导航（商城导航）</title>
+	<link rel="stylesheet" href="css/improts.css" />
+	<script type="text/javascript" src="js/jquery1.42.min.js"></script>
+	<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+	<script  src="js/angular.min.js"></script>
+
+	<style type="text/css">
+		.banner {
+			position: relative;
+			width: 1200px;
+			height: 3000px;
+
+			margin: 0 auto;
+			/*background: #FF0000;*/
+			overflow: hidden;
+		}
+
+	</style>
+</head>
+
+<body ng-app="c">
+
+
+
+<!--		中间的详情页面，做了一下商品推荐-->
+<div class="banner" >
+
+
+
+	<div class="favorable">
+				<span id="">
+					<img src="img/titl_03.jpg"/>
+				</span>
+		<a href="#">更多</a>
+	</div>
+	<!--今天优惠里面的图片-->
+
+	<!--今天优惠里面的图片-->
+	<div class="favorableBox" ng-controller="myc">
+		<div class="fBox" ng-repeat="x in cheap" >
+			<div class="fBoxPic">
+				<p style="height: 20px;;overflow: hidden;text-overflow: ellipsis;text-overflow: ellipsis;">
+					<a href="" >{{x.productName}}</a>
+				</p>
+				<div >
+					<img class="fBpic" ng-src="{{x.productImg}}" />
+				</div>
+				<div style="margin-top: -10px;">
+					<div>
+						原价{{x.oriPrice}}元
+						</span>
+						<span class="fBnum">
+								{{x.saleNum}}
+							</span>
+						<span >
+								人已经购买
+							</span>
+					</div>
+				</div>
+				<div class="fBBot" style="margin: 0px -10px">
+					<dd class="fBBotFot1">
+						￥
+					</dd>
+					<dd class="fBBotFot2">
+						{{x.currentPrice}}
+					</dd>
+					<dd class="fBBotBuy" href="#">购买</dd>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+</body>
+
+</html>
+<script type="text/javascript ">
+
+	var app = angular.module("c",[]);
+	app.controller("myc",function ($scope,$http) {
+		console.log("haha")
+		$http.get("http://localhost:8002/text").success(function (res) {
+			console.log(res);
+			$scope.res=res;
+			$scope.cheap=res[0];
+
+		})
+	})
+
+</script>

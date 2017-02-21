@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#myCanvas {
+				box-shadow: 0 0 3px red;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		<button onclick="stop()">停止</button>
+		<button onclick="start()">开始</button>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		
+		function Rect(x,y,w,h,color,speedX){
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.color = color;
+			this.speedX = speedX;
+		}
+		Rect.prototype.draw = function(){
+			context.beginPath();
+			context.rect(this.x,this.y,this.w,this.h);
+			context.fillStyle = this.color;
+			context.fill();
+		}
+		var rect = new Rect(100,100,50,50,"red",2);
+		
+		var times = "";
+		function ani(){
+			context.clearRect(0,0,canvas.width,canvas.height);
+			rect.x += rect.speedX;
+			rect.draw();
+			
+			times = window.requestAnimationFrame(ani);
+		}
+		ani();
+		
+		function stop(){
+			window.cancelAnimationFrame(times);
+		}
+		function start(){
+			ani();
+		}
+		
+	</script>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>test</title>
+		<style>
+			.text{
+				width: 100px;
+				height: 100px;
+				background: cyan;
+				display: none;
+			}
+			#btn{
+				width: 20px;
+				height: 20px;
+				background: pink;
+			}
+			#btn:checked ~ .text {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<input type="checkbox" id="btn"/>
+			<div class="text"></div>
+			<label for="btn">Click me</label>
+		</div>
+	</body>
+</html>

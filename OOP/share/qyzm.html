@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>验证码</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			#container {
+				width: 400px;
+				height: 200px;
+				background-color: gainsboro;
+				margin: 100px auto;
+				border-radius: 5px;
+			}
+			
+			#menu {
+				overflow: hidden;
+				margin-left: 35px;
+				padding-top: 45px;
+			}
+			
+			#code {
+				float: left;
+				width: 180px;
+				height: 50px;
+				border: 2px solid red;
+				border-radius: 5px;
+				box-sizing: border-box;
+				font-size: 2em;
+				
+			}
+			
+			#yzm {
+				float: left;
+				width: 140px;
+				height: 50px;
+				background-color: pink;
+				color: white;
+				margin-left: 10px;
+				text-align: center;
+				line-height: 50px;
+				font-size: 2em;
+				cursor:pointer;
+			}
+			
+			#sure {
+				width: 300px;
+				height: 50px;
+				background-color: orange;
+				color: white;
+				border: none;
+				margin-left: 35px;
+				margin-top: 10px;
+				border-radius: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="container">
+			<div id="menu">
+				<input type="text" name="code" id="code" value="" />
+				<span id="yzm">
+					1
+				</span>
+			</div>
+			<input type="button" name="" id="sure" value="确认" />
+		</div>
+	</body>
+	<script src="../php/js/JQuery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</script>
+	<script type="text/javascript">
+		$(".container").delay(200).animate({
+			"margin-top": "100px"
+		}, 300)
+
+		var code;
+
+		function createCode() {
+			code = "";
+			var codelength = 6;
+			var codeChars = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m"];
+			console.log(codeChars.length);
+//			console.log(codeChars);
+			for(var i = 0; i < codelength; i++) {
+				
+				var codeNum = parseInt(Math.random() * (35-0+1) + 0);
+				code += codeChars[codeNum];
+			}
+			console.log(code);
+			$("#yzm").html(code);
+		}
+
+		createCode();
+
+		function contrastCode() 
+		{
+			var txt = $("#code").val();
+			console.log(txt);
+			if(txt.length <= 0)
+			{
+				alert("请输入验证码");
+			}
+			else if(txt.toUpperCase() != code.toUpperCase()) {
+				alert("验证码错误");
+				createCode();
+			} else {
+				alert("验证码正确");
+			}
+		}
+		
+		$("#sure").click(function(){
+			contrastCode();
+		});
+		$("#yzm").click(function(){
+			createCode();
+		});
+		
+	</script>
+
+</html>

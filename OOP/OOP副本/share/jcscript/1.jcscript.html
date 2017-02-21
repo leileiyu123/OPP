@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		<button id="btn" onclick="btn()">start</button>
+	</body>
+	<script src="jCanvaScript.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//括号里的表示画布的id
+		//第二个参数代表可以重绘，可以进行多个操作
+		jc.start("myCanvas",true);
+		jc.rect(100,100,200,200,"#ffff00",1).draggable().id("c1");
+		jc.start();
+		function btn(){
+			jc("#c1").color("#ff00ff").animate({x:200,y:200,radius:5},2000);
+		}
+	</script>
+</html>

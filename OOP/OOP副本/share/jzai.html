@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>canvasCricle</title>
+    <style>
+        .circle{
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            left: 50%;
+            top:50%;
+            transform: translate3d(-50%,-50%,0);
+        }
+        #canvas1,#canvas2{
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom:0;
+            right: 0;
+        }
+        #canvas2{
+            transform:rotate(-90deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="circle">
+        <canvas id="canvas1" height="200" width="200"></canvas>
+        <canvas id="canvas2" height="200" width="200"></canvas>
+    </div>
+    
+</body>
+<script>
+        function canvas(deg){
+            var cav=document.querySelector("#canvas1");
+            var ctx=cav.getContext("2d");
+            ctx.lineWidth=10;
+            ctx.strokeStyle="black";
+            ctx.beginPath();
+            ctx.arc(100,100,95,0,2*Math.PI,false);
+            ctx.stroke();
+            ctx.closePath();
+            var cav1=document.querySelector("#canvas2");
+            var ctx1=cav1.getContext("2d");
+            var angle=0;
+            ctx1.lineWidth=10;
+            //创建一个线性渐变
+            var gradient  = ctx1.createLinearGradient(0,100,100,10);
+            //定义黄色渐变色
+            gradient.addColorStop(0,"red");
+            //定义红色渐变色
+            gradient.addColorStop(1,"yellow");
+            //设置strokeStyle为当前的渐变对象
+            ctx1.strokeStyle = gradient;
+            var timer=null;
+            (function beginDraw(){
+                timer = requestAnimationFrame(beginDraw);
+                ctx1.beginPath();
+                ctx1.arc(100,100,95,0,angle * Math.PI / 180,false);
+                ctx1.clearRect(0, 0, 200, 200);
+                var percentAge = parseInt((angle / 360) * 100)
+                if (angle < (deg / 100 * 360)) {
+                    angle++;
+                }else{
+                    window.cancelAnimationFrame(timer);
+                }
+                ctx1.stroke();
+                ctx1.closePath();
+                ctx1.rotate(90 * Math.PI / 180);
+                ctx1.font = '30px Arial';
+                ctx1.fillStyle = 'red';
+                var text = percentAge + '%';
+                ctx1.fillText(text, 80, -90);
+                ctx1.closePath();
+//              ctx1.restore();
+            })();
+        }
+        canvas(80);
+    </script>
+</html>

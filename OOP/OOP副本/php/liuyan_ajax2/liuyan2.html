@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>留言板</title>
+		<style type="text/css">
+			body,html{
+				margin: 0;
+				padding: 0;
+				background: #eee;
+				text-align: center;
+			}
+			#bodys{
+				margin: auto;
+				text-align: left;
+				padding: 20px 10px;
+				width: 355px;
+				/*height: 600px;*/
+				border: 1px solid #aaa;
+			}
+			#content{
+				width: 300px;
+				height: 150px;
+			}
+			button{
+				display: block;
+				width: 90px;
+				height: 30px;
+				background: white;
+			}
+			#center{
+				display: table;
+			}
+			#ccc{
+				display: table-cell;
+				vertical-align: middle;
+			}
+			ul{
+				list-style-type: none;
+				padding: 0;
+				margin: 10px 0 0px;
+			}
+			li{
+				text-indent: 30px;
+				background: white;
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+				padding-right: 10px;
+				border-bottom: 1px solid #ccc;
+			}
+			.right{
+				text-align: right;
+			}
+			#pagess span{
+				padding: 5px;
+			}
+			a{
+				text-decoration: none;
+			}
+		</style>
+	</head> 
+	<body>
+		<div id="bodys">
+			<div id="center">
+				<span id="ccc">内容：</span>
+				<textarea id="content" name="" rows="" cols=""></textarea>
+				<button id="sub" onclick="sub()">提交</button>
+			</div>
+			<div>
+				<input type="hidden" name="page" id="page" value=" " />
+			</div>
+			<ul id="uls" data_id="ccc">
+				<!--<li class="parents">
+					<p>sdajkdaha</p>
+					<p class="right">
+						<span>2016-3-10</span>
+						顶：<a href="#" data_id="" onclick="" status="">12</a>
+						踩：<a href="#" data_id="" onclick="">0</a>
+						<a href="#" data_id="" onclick="" >删除</a>
+					</p>
+				</li>-->
+			</ul>
+			<div id="pagess"></div>
+		</div>
+		
+	</body>
+	<script type="text/javascript" src="../js/JQuery-3.1.1.min.js" ></script>
+	<script type="text/javascript">
+		//创建li
+		function createLi(data){
+			var times = data.times*1000; 
+			var newDate = new Date();
+			newDate.setTime(times);
+			var dates = newDate.getFullYear()+"年"+addZero((newDate.getMonth()+1))+"月"+addZero(newDate.getDate())+"日"+" "+addZero(newDate.getHours())+":"+addZero(newDate.getMinutes())+":"+addZero(newDate.getSeconds());
+			var liObj = $('<li class="parents"><p>'
+			+data.content+
+			'</p><p class="right" data_id='+data.liuyanId+'><span>'
+			+dates+
+			'</span>顶：<a href="#" data_id="" onclick="" status="0">'
+			+data.ding+
+			'</a>踩：<a href="#" data_id="" onclick="" status="1">'
+			+data.cai+
+			'</a><a href="#" data_id="" onclick="" status="2">删除</a></p></li>');
+			return liObj;
+		}
+		
+		//查询每页的五条数据
+		function selectAll(page){
+			$.ajax({
+				type:"get",
+				url:"ajax_select.php",
+				data:{
+					page:page
+				},
+				dataType:"json",
+				success:function(data){
+					console.log(data);
+					for(var keys in data){
+						if(keys != "page"){
+							var liObj = createLi(data[keys]);
+							$("#uls").append(liObj);
+						}
+					}
+					setPages(data.page);
+				},
+				error:function(errors){
+					console.log("失败");
+					console.log(errors);
+				}
+			});
+		}
+		//实时更新页码
+		function setPages(page){
+			if(page==0){
+				$("#pagess").html("");
+			}else{
+				// 3 7
+				var num = Math.abs($("#pagess span").length-page);
+				if($("#pagess span").length < page){
+					var length = $("#pagess span").length;
+					for(var i = 0;i<num;i++){
+						var spans = $('<span pages='+(length+i)+'>' + (length+i+1) + '</span>');
+						$("#pagess").append(spans);
+					}
+				}else if($("#pagess span").length > page){
+				// 7 3	
+					for(var j = 0;j<num;j++){
+						$("#pagess span:last-child").remove();
+					}
+				}
+				if($("#pagess span").length == page){
+				// 2 2 |  1 1
+					if($("#uls li").length == 0){
+						var indexpage = $("#page").val();
+						selectAll(indexpage-1);
+						$("#page").val(indexpage-1);
+					}
+				}
+			}
+		}
+		//显示首页五条留言
+		selectAll(0);
+		
+		//分页后点击每一页展示当页留言
+		var pages = document.getElementById("pagess");
+		pages.addEventListener("click",function(e){
+			var ev = e||window.event;
+			console.log(ev.target);
+			var pages = $(ev.target).attr("pages");
+			if(pages){
+				$("#page").val(pages);
+				$("#uls").html("");
+				selectAll(pages);
+//				$("#uls").html("");//也可以放selectAll方法后，因为该方法比成功回调快
+			}
+		},false);
+		
+		//时间小于9,前面添加0
+		function addZero(s){
+			if (s<10){
+				return "0"+s;
+			}else{
+				return s;
+			}
+		}
+		//点击提交按钮增加新留言
+		function sub(){
+			var content = $("#content").val(); 
+			$.ajax({
+				type:"get",
+				url:"ajax_add.php",
+				data:{
+					content:content
+				},
+				dataType:"json",
+				success:function(data){
+					console.log(data);
+					var liObj = createLi(data);	
+					$("#uls").prepend(liObj);
+					
+					var h = liObj.height();	
+					liObj.height(0);	
+					liObj.animate({
+						height:h
+					})	
+					if($("#uls li").length == 6){
+						$("#uls li:last-child").animate({
+							//设置liObj初始高度为0
+							height:0
+						},function(){
+							$("#uls li:last-child").remove();
+						})
+					}
+					
+					setPages(data.page);
+				},
+				error:function(errors){
+					console.log("失败");
+					console.log(errors);
+				}
+			});
+		}
+		
+		//给uls绑定监听事件 顶 踩 删
+		var uls = document.getElementById("uls");
+		uls.addEventListener("click",function(e){
+			var ev = e || window.event;
+			var status = $(ev.target).attr("status");
+			if(status){
+				var liuyanId = $(ev.target).parent().attr("data_id");
+				console.log(liuyanId);
+				var indexs = $(ev.target).parents("li").index();
+//				console.log(indexs);
+				switch(status){
+					case "0":
+						ding(liuyanId,ev.target);
+						break;
+					case "1":
+						cai(liuyanId,ev.target);
+						break;
+					case "2":
+						deletes(liuyanId,indexs);
+						break;
+					default:
+						break;
+				}
+			}
+		},false);
+		//顶
+		function ding(ids,obj){
+			$.ajax({
+				type:"get",
+				url:"ajax_ding.php",
+				data:{
+					id:ids
+				},
+				dataType:"json",
+				success:function(data){
+					console.log("成功");
+					console.log(data);
+					if(data.msg){
+						alert(data.msg);
+					}
+					if(data.errorcode == 0){
+						$(obj).html(data.count);
+					}
+				},
+				error:function(errors){
+					console.log("失败");
+					console.log(errors);
+				}
+			});
+		}
+		//踩
+		function cai(ids,obj){
+			$.ajax({
+				type:"get",
+				url:"ajax_cai.php",
+				data:{
+					id:ids
+				},
+				dataType:"json",
+				success:function(data){
+					console.log("成功");
+					console.log(data);
+					if(data.msg){
+						alert(data.msg);
+					}
+					if(data.errorcode==0){
+						$(obj).html(data.count);
+					}
+				},
+				error:function(errors){
+					console.log("失败");
+					console.log(errors);
+				}
+			});
+		}
+		//删除留言
+		function deletes(ids,indexs){
+			$.ajax({
+				type:"get",
+				url:"ajax_delete.php",
+				data:{
+					id:ids,
+					page:$("#page").val()
+				},
+				dataType:"json",
+				success:function(data){
+					console.log("成功");
+					console.log(data);
+					$("#uls li").eq(indexs).animate({
+						height:0
+					},function(){
+						$("#uls li").eq(indexs).remove();
+						setPages(data.page);
+					});
+					console.log(data.page);
+					if(data.errorcode == 0){
+						var liObj = createLi(data[0]);	
+						$("#uls").append(liObj);
+						
+						var h = liObj.height();	
+						liObj.height(0);	
+						liObj.animate({
+							height:h
+						})	
+					}
+				},
+				error:function(errors){
+					console.log("失败");
+					console.log(errors);
+				}
+			});
+		}
+	</script>
+</html>

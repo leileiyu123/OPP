@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.index{
+				width: 150px;
+				height: 150px;
+				background: red;
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="outer">
+			<div class="index" id="first">1</div>
+			<div class="index" id="second">2</div>
+			<div class="index" id="third">3</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+	
+		function findClass(obj,className){
+			var resultArr = [];
+			if(obj.getElementsByClassName){
+				resultArr = 	obj.getElementsByClassName(className);
+			}else{
+				var arrs = obj.getElementsByTagName("*");
+				for(var i=0;i<arrs.length;i++){
+					var reg = new RegExp("\\b"+className+"\\b");
+					if(reg.test(arrs[i].className)){
+						resultArr.push(arrs[i]);
+					}
+				}
+				
+			}
+			return resultArr;
+		}
+		
+		function selectEL(arg){
+			var reg = /^\s+|\s+$/g;
+			arg = arg.replace(reg,"");
+			var reg = /\s+/g;
+			arg = arg.replace(reg," ");
+			var elArr = arg.split(" ");
+			
+			
+			
+			var parentArr = [document];
+			for(var i=0;i<elArr.length;i++){
+				
+				var childArr = [];
+				for(var j=0;j<parentArr.length;j++){
+					if(/^#/.test(elArr[i])){
+						var ids = elArr[i].substring(1);
+						var el = document.getElementById(ids);
+						if(childArr.indexOf(el) == -1){
+							childArr.push(el);
+						}
+					}else if(/^\./.test(elArr[i])){
+						var classNames = elArr[i].substring(1);
+						var resultArr = findClass(parentArr[j],classNames);
+						for(var k=0;k<resultArr.length;k++){
+							if(childArr.indexOf(resultArr[k])==-1){
+								childArr.push(resultArr[k]);
+							}
+						}
+					}else{
+						var resultArr = parentArr[j].getElementsByTagName(elArr[i]);
+						for(var n=0;n<resultArr.length;n++){
+							if(childArr.indexOf(resultArr[n])==-1){
+								childArr.push(resultArr[n]);
+							}
+						}
+					}
+				}
+				parentArr=childArr;
+			}
+			return parentArr;
+		}
+		var arr = selectEL("  .index ");
+		console.log(arr);
+		
+		
+		function $(arg){
+			return new Jq(arg);
+		}
+		
+		function ready(fn){
+			if(window.addEventListener){
+				document.addEventListener("DOMContentLoaded",fn,false);
+			}else{
+				var os = document.createElement("script");
+				os.defer = true;
+				os.onreadystatechange = function(){
+					if(os.readyState == "complete"){
+						fn();
+					}
+				}
+				var oh = document.getElementsByTagName("head")[0];
+				oh.appendChild(os);
+			}
+		}
+		function Jq(arg){
+			this.elements = [];
+			if(typeof arg == "string"){
+				this.elements = selectEL(arg);
+			}else if(typeof arg == "function"){
+				ready(arg);
+			}else{
+				this.elements.push(arg);
+			}
+		}
+		
+		Jq.prototype.eq = function(index){
+			return $(this.elements[index]);
+		}
+		
+		function addEvent(obj,eventName,fn){
+			if(obj.addEventListener){
+				obj.addEventListener(eventName,fn,false);
+			}else{
+				obj.attachEvent("on"+eventName,fn);
+			}
+		}
+		
+		Jq.prototype.click = function(fn){
+			for(var i=0;i<this.elements.length;i++){
+				addEvent(this.elements[i],"click",fn);
+//				this.elements[i].addEventListener("click",fn,false);
+			}
+		}
+		
+		Jq.prototype.on = function(eventSrc,fn){
+			var eventArr = eventSrc.split(" ");
+			for(var j=0;j<eventArr.length;j++){
+				for(var i=0;i<this.elements.length;i++){
+					addEvent(this.elements[i],eventArr[j],fn);
+				}
+			}
+		}
+		function getStyle(obj,styleName){
+			if(window.getComputedStyle){
+				return getComputedStyle(obj,null)[styleName];
+			}else{
+				return obj.currentStyle[styleName];
+			}
+		}
+		function setStyle(obj,styleName,styleValue){
+			var arr = ["width","height"];
+			for(var i=0;i<arr.length;i++){
+				if(arr[i] == styleName){
+					if(typeof styleValue == "number"){
+						styleValue = styleValue + "px";
+					}
+				}
+			}
+			obj.style[styleName] = styleValue;
+		}
+		Jq.prototype.css = function(){
+			if(arguments.length == 1){
+				if(typeof arguments[0] == "string"){
+					return getStyle(this.elements[0],arguments[0]);
+				}else{
+					for(var keys in arguments[0]){
+						for(var i=0;i<this.elements.length;i++){
+							setStyle(this.elements[i],keys,arguments[0][keys]);
+//							this.elements[i].style[keys] = arguments[0][keys];
+						}
+					}
+				}
+			}else if(arguments.length == 2){
+				for(var i=0;i<this.elements.length;i++){
+					setStyle(this.elements[i],arguments[0],arguments[1]);
+				}
+			}
+		}
+		$(".index").click(function(){
+			alert(11)
+		})
+		$(".index").eq(1).click(function(){
+			console.log(22);
+		})
+
+
+		$(".index").on("mouseup mousedown",function(){
+			console.log("up");
+			console.log("down");
+		})
+		
+		$(".index").eq(2).css({
+			background:"yellow",
+			width:"100px",
+			height:100
+		})
+		$(".index").css("background","green");
+		console.log($(".index").eq(1).css("background"));
+		
+		
+		
+
+	</script>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>login</title>
+		<link rel="stylesheet" type="text/css" href="css/login.css" />
+		<script src="js/angular.min.js"></script>
+		<script src="js/jquery1.42.min.js"></script>
+	</head>
+
+	<body ng-app="ylApp">
+		<div class="loginBox" ng-controller="myController">
+			<div class="login1">
+				<div class="login1_1">
+					<a href="index.html">
+						<img class="logo" src="img/logo.jpg" />
+					</a>
+				</div>
+				<div class="login1_2">
+					<a href="index.html">网站首页</a> |
+					<a href="#">帮助中心</a>
+				</div>
+			</div>
+			<div class="login2">
+				<div class="login2_1">
+					<form class="login2_1_1" OnSubmit="return checkdata()" onReset="return ResetForm();">
+						<div class="input1">
+							Email: <input type="text" name="email" id="email" class="ipt1" value="" ng-model="email">
+						</div>
+						<div class="input2">
+							密码: <input type="password" name="pwd" id="pwd" class="ipt1" ng-model="pwd">
+						</div>
+					</form>
+					<div class="login2_1_2">
+						<input ng-click="submit()" type="submit" class="nlog_submit" value=" " title="登录" onmousemove='this.className="nlog_submit1"' onmouseout='this.className="nlog_submit"'>
+						<a href="#">忘记密码？</a>
+					</div>
+					<div class="login2_1_3">使用合作网站账号登录：</div>
+					<div class="login2_1_4">
+						<a class="nreg_zpay" href="http://eyoupin.com/alilogin/alipay_auth_authorize.asp">支付宝</a> |
+						<a class="nreg_sina" href="#">新浪微博</a> |
+						<a class="nreg_qq" href="#">QQ</a>
+					</div>
+				</div>
+				<div class="login2_2">
+					<div class="login2_2_1">你还不是一优品用户？</div>
+					<div class="login2_2_2">现在立即注册成为一优品用户，我们会为您提供更专业、更细致、更周到的服务，享受便宜又放心的购物乐趣。</div>
+					<div class="login2_2_3">
+						<a href="register.html" class="nlog_reg " title="注册新用户" onmousemove='this.className="nlog_reg1"' onmouseout='this.className="nlog_reg"'></a>
+					</div>
+				</div>
+
+			</div>
+			<div class="login3">
+				<!--版权信息-->
+				<div>
+					<span>Copyright 2012</span>
+					<a href="#">一优品</a>
+					<span> All Rights Reserved </span>
+				</div>
+			</div>
+
+			<div style="clear: both"></div>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		var app = angular.module("ylApp", []);
+		app.controller("myController", function($scope) {
+			$scope.submit = function() {
+				console.log($scope.email);
+				console.log($scope.pwd);
+				$.ajax({
+					type:"post",
+					url:"php/login.php",
+					data:{
+						email:$scope.email,
+						pwd:$scope.pwd
+					},
+//					success:function(data){
+//						var obj = JSON.parse(data);
+//						console.log(data);
+//						if(obj.errcode == 0){
+//							console.log(obj.msg);
+//						}
+//					},
+					success: function(data) {
+						//用于从一个字符串中解析出json对象
+						var obj = JSON.parse(data);
+						console.log("成功");
+						console.log(data);
+						console.log(obj);
+//						if(obj.errcode == 1) {
+//							$("#emails").css("color","#F50000");
+//						} else if(obj.errcode == 0) {
+//							$("#emails").css("color","#2E9800");
+//						}
+//						$("#emails").html(obj.msg);
+					},
+					error:function(errors){
+						console.log("失败");
+					}
+				});
+				
+			}
+
+		})
+	</script>
+
+</html>

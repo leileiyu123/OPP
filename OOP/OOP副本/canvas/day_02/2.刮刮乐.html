@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>刮刮乐</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			#myCanvas {
+				box-shadow: 0 0 3px red;
+				position: absolute;
+			}
+			
+			img {
+				width: 600px;
+				height: 600px;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<img src="../img/1.jpeg" />
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+
+		context.fillStyle = "darkgray";
+		context.fillRect(0, 0, 600, 600);
+
+		context.globalCompositeOperation = "destination-out";
+	
+		canvas.onmousedown = function() {
+			document.onmousemove = function(e) {
+				var ev = e || window.event;
+				var x = ev.clientX;
+				var y = ev.clientY;
+
+				context.beginPath();
+				context.arc(x, y, 50, 0, Math.PI * 2);
+				context.fill();
+
+				var imgData = context.getImageData(0, 0, 600, 600);
+				var arr = imgData.data;
+				//count1代表一共有多少个像素点
+				var count1 = arr.length/4; 
+				
+				var count = 0;
+				for(var i = 0; i < arr.length; i += 4) {
+					if(arr[i + 3] == 0) {
+						count++;
+						//count代表一个有多少个像素点是透明的
+						if(count>=count1/2){
+							context.clearRect(0,0,600,600);
+						}
+					}
+				}
+			}
+			document.onmouseup = function() {
+				document.onmousemove = "";
+			}
+		}
+		
+	</script>
+
+</html>

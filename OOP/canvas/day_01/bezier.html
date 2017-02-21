@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body {
+				position: relative;
+				margin: 0;
+				padding: 0;
+			}
+			
+			#myCanvas {
+				box-shadow: 4px 4px 4px #B0E0E6;
+				/*margin: 50px;*/
+			}
+			
+			#qiu1,
+			#qiu2 {
+				position: absolute;
+				outline: none;
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				background: aquamarine;
+				border: 0px solid transparent;
+			}
+			
+			#qiu1 {
+				left: 85px;
+				top: 85px;
+			}
+			
+			#qiu2 {
+				left: 385px;
+				top: 385px;
+				background: fuchsia;
+			}
+			#title{
+				width: 300px;
+				height: 40px;
+				/*border: 1px solid black;*/
+				line-height: 40px;
+				position: absolute;
+				left: 100px;
+				top: 40px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+		<button id="qiu1"></button>
+		<button id="qiu2"></button>
+		<div id="title">
+			<span>cubic-bezier</span>
+			<span >(</span>
+			<span id="sp1"></span>
+			<span id="sp2"></span>
+			<span id="sp3"></span>
+			<span id="sp4"></span>
+			<span>)</span>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var myCanvas = document.querySelector("#myCanvas");
+		var context = myCanvas.getContext("2d");
+		var qiu1 = document.querySelector("#qiu1");
+		var qiu2 = document.querySelector("#qiu2");
+		var title = document.querySelector("#title");
+		var sp1 = document.querySelector("#sp1");
+		var sp2 = document.querySelector("#sp2");
+		var sp3 = document.querySelector("#sp3");
+		var sp4 = document.querySelector("#sp4");
+
+		function Bezier(qiu1X, qiu1Y, qiu2X, qiu2Y,a,b,c,d) {
+			this.qiu1 = {};
+			this.qiu1.x = qiu1X;
+			this.qiu1.y = qiu1Y;
+			this.qiu1.rate1 = a;
+			this.qiu1.rate2 = b;
+			
+			this.qiu2 = {};
+			this.qiu2.x = qiu2X;
+			this.qiu2.y = qiu2Y;
+			this.qiu2.rate3 = c;
+			this.qiu2.rate4 = d;
+		}
+
+		Bezier.prototype.draw = function() {
+
+			context.fillStyle = "darkgray";
+			context.fillRect(100, 100, 300, 300);
+			context.fill();
+
+			context.save();
+			context.beginPath();
+			context.moveTo(100, 400);
+			context.lineTo(this.qiu1.x, this.qiu1.y);
+			context.strokeStyle = "red";
+			context.stroke();
+			context.beginPath();
+			context.moveTo(400, 100);
+			context.lineTo(this.qiu2.x, this.qiu2.y);
+			context.strokeStyle = "red";
+			context.stroke();
+			context.restore();
+
+			context.save();
+			context.beginPath();
+			context.moveTo(100, 400);
+			context.bezierCurveTo(this.qiu1.x, this.qiu1.y, this.qiu2.x, this.qiu2.y, 400, 100);
+			context.lineWidth = 10;
+			context.stroke();
+			context.restore();
+			
+			sp1.innerHTML = this.qiu1.rate1.toFixed(2) + ",";
+			sp2.innerHTML = this.qiu1.rate2.toFixed(2) + ",";
+			sp3.innerHTML = this.qiu2.rate3.toFixed(2) + ",";
+			sp4.innerHTML = this.qiu2.rate4.toFixed(2);
+
+		}
+
+		var bezier = new Bezier(100, 100, 400, 400,0,1,1,0);
+		bezier.draw();
+
+		qiu1.onmousedown = qiu2.onmousedown = function() {
+//			console.log(this);
+			var  _this = this;
+			document.onmousemove = function(e) {
+				var ev = e || window.event;
+				console.log(ev);
+				var x = ev.clientX;
+				var y = ev.clientY;
+				
+//				var qiu = "";
+				if(_this.id == "qiu1"){
+//					qiu = bezier.qiu1;
+					bezier.qiu1.x = x;
+					bezier.qiu1.y = y;
+					bezier.qiu1.rate1 = (x-100)/300;
+					bezier.qiu1.rate2 =(400-y)/300;
+				}else{
+//					qiu = bezier.qiu2;
+					bezier.qiu2.x = x;
+					bezier.qiu2.y = y;
+					bezier.qiu2.rate3 = (x-100)/300;
+					bezier.qiu2.rate4 =(400-y)/300;
+					
+				}
+//				qiu.x = x;
+//				qiu.y = y;
+				_this.style.left = x - 15 + "px";
+				_this.style.top = y - 15 + "px";
+				
+				
+				context.clearRect(0, 0, myCanvas.width, myCanvas.height);
+				bezier.draw();
+
+			}
+			document.onmouseup = function() {
+				document.onmousemove = "";
+			}
+		}
+		
+	</script>
+
+</html>

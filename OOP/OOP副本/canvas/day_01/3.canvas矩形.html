@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>canvas矩形</title>
+		<style type="text/css">
+			#myCanvas{
+				box-shadow: 0 0 3px brown;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="800" height="600"></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context  = canvas.getContext("2d");
+		
+		var colorArr = ["blue","red","yellow","green"];
+//		for(var i=0;i<4;i++){
+//			context.beginPath();
+//			context.moveTo(100+50*i,100+50*i);
+//			context.lineTo(300+50*i,100+50*i);
+//			context.lineTo(300+50*i,300+50*i);
+//			context.lineTo(100+50*i,300+50*i);
+//			context.closePath();
+////			context.stroke();
+//			context.fillStyle = colorArr[i];
+//			context.fill();
+//		}
+		
+//		context.fillStyle = "orange";
+//		context.fillRect(100,200,300,100);
+		
+		
+//		context.beginPath();
+//		context.rect(300,400,200,100);
+//		context.fillStyle = "cyan";
+//		context.fill();
+		
+//		context.beginPath();
+//		context.fillStyle = "darkcyan";
+//		context.rect(100,100,200,200);
+//		context.fill();
+		
+		
+		//面向对象方法
+		function Rect(x,y,w,h,color){
+			this.x = x;
+			this.y = y;
+			this.w = w;
+			this.h = h;
+			this.color = color;
+		}
+		Rect.prototype.draw = function(){
+			context.beginPath();
+			context.rect(this.x,this.y,this.w,this.h);
+			context.fillStyle = this.color;
+			context.fill();
+		}
+//		var rectArr = [];
+		for(var i=0;i<4;i++){
+			var rect1 = new Rect(100+50*i,100+50*i,400,200,colorArr[i]);
+			rect1.draw();
+//			rectArr.push(rect1);
+		}
+	
+	</script>
+</html>

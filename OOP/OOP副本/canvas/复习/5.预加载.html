@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<style type="text/css">
+			#myCanvas{
+				border: 2px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="" height=""></canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		
+		function loading(objImg,obj){
+			var length = 0;
+			for(var keys in objImg){
+				length++;
+			}
+			
+			var num = 0;
+			var imgObj = {};
+			for(var keys in objImg){
+				var img = new Image();
+				img.src = objImg[keys];
+				
+				img.onload = function(keys,img){
+					return function(){
+						num++;
+						imgObj[keys] = img;
+						var loads = num/length;
+						if(obj.load){
+							obj.load(loads);
+						}
+						if(num==length){
+							if(obj.complete){
+								obj.complete(imgObj);
+							}
+						}
+					}
+				}(keys,img)
+				
+			}
+		}
+		
+		loading({
+			"bg" : "../day_03/img/background.png",
+			"hero" : "../day_03/img/herofly.png",
+			"bullet":"../day_03/img/bullet2.png",
+			"enemy1":"../day_03/img/enemy1.png",
+			"enemy2":"../day_03/img/enemy2.png",
+			"enemy3":"../day_03/img/enemy1.png"
+		},{
+			load:load,
+			complete:main
+		});
+		
+		function main(imgObj){
+			var windowWidth = document.documentElement.clientWidth;
+			var windowHeight = document.documentElement.clientHeight;
+			canvas.width = windowWidth;
+			canvas.height = windowHeight;
+			
+			context.drawImage(imgObj.hero,0,0);
+		}
+		
+		function load(){
+			
+		}
+	</script>
+</html>

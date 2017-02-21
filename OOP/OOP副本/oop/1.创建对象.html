@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>创建对象</title>
+	</head>
+	<body>
+		
+	</body>
+	<script type="text/javascript">
+		//方法一
+		var obj = new Object();
+		obj.name = "yl";
+		console.log(obj.name);
+		
+		obj.say = function(){
+			console.log("hello world");
+		}
+		obj.say();
+		
+		
+		//方法二
+		var obj1 = {
+			age:20,
+			sex:"women"
+		};
+		obj1.name = "leilei";
+		console.log(obj1);
+		
+		
+		var str = "hello";
+		str.name = "world";
+		console.log(str.name);
+		
+		
+		var strObj = new String("hahhaha");
+		strObj.name = "qw";
+		console.log(typeof strObj);
+		console.log(strObj.name);
+		
+		//练习
+		var Dog = {
+			name:"gougou",
+			sex:"men"
+		}
+		Dog.eat = function(){
+			console.log("吃");
+		}
+		Dog.drink = function(){
+			console.log("喝");
+		}
+		Dog.say = function(){
+			console.log("叫");
+		}
+		Dog.eat();
+		Dog.drink();
+		Dog.say();
+		//只有对象才有属性和方法，基本数据类型没有。string等类型能够使用的方法来自他自身的构造器。
+		//在基本数据类型调用方法时会临时调用
+	</script>
+</html>

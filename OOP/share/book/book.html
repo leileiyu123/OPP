@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>book</title>
+		<link rel="stylesheet" type="text/css" href="css/normalize.css"/>
+		<link rel="stylesheet" type="text/css" href="css/htmleaf-demo.css"/>
+		<style>
+			html,body{
+				width: 100%;
+				margin: 0px;
+				padding: 0px;
+				background: lightblue;
+				min-width: 800px;
+			}
+			.section{
+				width:800px;
+				background: url("img/bg.png") no-repeat;
+				background-size:100% 100%;
+				border:1px solid black;
+				border-radius: 10px;
+				margin: 50px auto;
+			}
+			.section>div{
+				padding: 30px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div class="section">
+			<div>
+				<div id="mybook"></div>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery-1.11.0.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.onebook3d-2.3.0-full-min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.mousewheel.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/three.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+			var arr=[
+			["img/star1.jpg","时光相册，无尽回忆，悲旧年华，岁月痕迹"],
+			["img/star2.jpg","静数时光，默怀年少"],
+			"img/star4.jpg",
+			"img/star5.jpg",
+			"img/star6.jpg",
+			"img/star7.jpg",
+			"img/star8.jpg",
+			"img/star9.jpg",
+			"img/star10.jpg",
+			"img/food.jpg",
+			"人生的路要寄几走"
+		];
+		//然后在DOM元素加载完毕之后，通过onebook()方法来初始化该插件。	
+		$("#mybook").onebook(arr,{
+			startPage:1,
+			skin:["light","dark"],
+			bgDark: 'url(img/bg2.jpg)',
+//			bgLight: 'url(img/bg2.jpg)',
+			border: 30,
+			slope:0,
+			pageСolor:"red",
+			flip:"basic",
+			language:"en",
+			cesh: false
+		})
+	</script>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>圆+太极</title>
+		<style type="text/css">
+			#myCanvas{
+				/*box-shadow: 0 0 5px rosybrown;*/
+				/*background: palegoldenrod;*/
+				-webkit-animation: 2s run linear infinite;
+			}
+			@-webkit-keyframes run{
+				from{transform: rotate(0);}
+				to{transform: rotate(360deg);}
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="myCanvas" width="600" height="600"></canvas>
+	</body>
+	<script type="text/javascript" >
+		var canvas = document.getElementById("myCanvas");
+		var context = canvas.getContext("2d");
+		var deg = Math.PI/180;
+//		context.beginPath();
+//		//在我们进行绘制圆形的时候因为要涉及到弧度问题
+//		//所以我们要知道0°在我们的时钟三点钟的位置
+//		//如果度数增加就是需要按照顺时针进行增加
+//		//如果度数减小就是往逆时针方向进行
+//		context.arc(200,200,100,0,-90*deg,true);//true:逆时针 false:顺时针
+//		context.stroke();
+		
+		
+		context.beginPath();
+		context.arc(300,300,200,0,180*deg,true);
+		context.fillStyle = "black";
+		context.fill();
+		context.stroke();
+		
+		context.beginPath();
+		context.arc(300,300,200,0,180*deg,false);
+		context.fillStyle = "white";
+		context.fill();
+		context.stroke();
+
+		context.beginPath();
+		context.arc(200,300,100,0,-180*deg,true);
+		context.fillStyle = "white";
+		context.fill();
+		context.stroke();
+		
+		context.beginPath();
+		context.arc(400,300,100,0,180*deg,false);
+		context.fillStyle = "black";
+		context.fill();
+		context.stroke();
+		
+		context.beginPath();
+		context.arc(200,300,30,0,360*deg,true);
+		context.fillStyle = "black";
+		context.fill();
+		context.stroke();
+		
+		context.beginPath();
+		context.arc(400,300,30,0,360*deg,false);
+		context.fillStyle = "white";
+		context.fill();
+		context.stroke();
+		
+		
+	</script>
+</html>

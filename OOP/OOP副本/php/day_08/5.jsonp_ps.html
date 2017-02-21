@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<input type="text" name="wd" id="wd" value="" />
+		<ul id="uls"></ul>
+	</body>
+	<script src="../js/JQuery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var uls = document.getElementById("uls");
+		var wd = document.getElementById("wd");
+		wd.oninput = function(){
+			var os = document.createElement("script");
+			os.src = "http://localhost/OOP/php/day_08/6.jsonp_jsServer.php?cb=success&name="+this.value;
+			var oh = document.getElementsByTagName("head")[0];
+			oh.appendChild(os);
+			oh.removeChild(os);
+		}
+		
+		function success(data){
+			console.log("成功");
+			console.log(data);
+			var uls = document.getElementById("uls");
+			uls.innerHTML = "";
+			if(data.msg){
+				var lis = document.createElement("li");
+				lis.innerHTML = data.msg;
+				uls.appendChild(lis);
+			}else{
+				for(var i=0;i<data.length;i++){
+					var lis = document.createElement("li");
+					lis.innerHTML = data[i].name;
+					uls.appendChild(lis);
+				}
+			}
+		}
+		
+	</script>
+</html>
